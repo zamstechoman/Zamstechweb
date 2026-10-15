@@ -1,0 +1,33 @@
+.cinematic-stage {
+  min-height: min(100svh, 620px);
+}
+
+.cinematic-progress {
+  bottom: 5.25%;
+}
+
+.cinematic-progress-track {
+  bottom: -10px;
+  height: 2px;
+}
+
+@media (max-width: 760px) {
+  .cinematic-stage {
+    min-height: min(100svh, 580px);
+  }
+
+  .cinematic-progress {
+    bottom: 4.5%;
+  }
+}
+
+@media (max-height: 680px) and (min-width: 761px) {
+  .cinematic-chapter h1,
+  .cinematic-chapter h2 {
+    font-size: clamp(36px, 5vw, 54px);
+  }
+
+  .cinematic-progress {
+    bottom: 4.5%;
+  }
+}

@@ -29,16 +29,39 @@ function HomePage() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const context = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
-        gsap.fromTo(element, { y: 26, autoAlpha: 0 }, {
+      const revealTargets = gsap.utils.toArray<HTMLElement>('[data-reveal]')
+      gsap.set(revealTargets, { y: 28, autoAlpha: 0 })
+      ScrollTrigger.batch(revealTargets, {
+        start: 'top 88%',
+        once: true,
+        onEnter: (elements) => gsap.to(elements, {
           y: 0,
           autoAlpha: 1,
-          duration: 0.72,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: element, start: 'top 88%', once: true },
-        })
+          duration: 0.82,
+          stagger: 0.09,
+          ease: 'power3.out',
+          overwrite: 'auto',
+        }),
       })
 
+      const materialStudy = pageRef.current?.querySelector('.lab-preview-art')
+      const ringA = materialStudy?.querySelector('.lab-ring-a')
+      const ringB = materialStudy?.querySelector('.lab-ring-b')
+      const core = materialStudy?.querySelector('.lab-preview-core')
+      if (materialStudy && ringA && ringB && core) {
+        const studyMotion = { trigger: materialStudy, start: 'top bottom', end: 'bottom top', scrub: 1 }
+        gsap.to(ringA, { rotation: 18, ease: 'none', scrollTrigger: studyMotion })
+        gsap.to(ringB, { rotation: -16, ease: 'none', scrollTrigger: studyMotion })
+        gsap.to(core, { rotation: 62, scale: 1.08, ease: 'none', scrollTrigger: studyMotion })
+      }
+
+      gsap.utils.toArray<HTMLElement>('.project-visual').forEach((visual) => {
+        gsap.fromTo(visual, { scale: 1.045 }, {
+          scale: 1,
+          ease: 'none',
+          scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: 0.8 },
+        })
+      })
     }, pageRef)
 
     return () => context.revert()
