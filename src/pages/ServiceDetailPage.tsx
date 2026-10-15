@@ -17,11 +17,19 @@ function ServiceDetailPage() {
     const originalTitle = document.title
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]')
     const originalDescription = description?.content
+    const socialTitle = document.querySelector<HTMLMetaElement>('meta[property="og:title"]')
+    const originalSocialTitle = socialTitle?.content
+    const socialDescription = document.querySelector<HTMLMetaElement>('meta[property="og:description"]')
+    const originalSocialDescription = socialDescription?.content
     document.title = `${service.title} | Amity Node`
     if (description) description.content = service.summary
+    if (socialTitle) socialTitle.content = `${service.title} | Amity Node`
+    if (socialDescription) socialDescription.content = service.summary
     return () => {
       document.title = originalTitle
       if (description && originalDescription) description.content = originalDescription
+      if (socialTitle && originalSocialTitle) socialTitle.content = originalSocialTitle
+      if (socialDescription && originalSocialDescription) socialDescription.content = originalSocialDescription
     }
   }, [service])
 

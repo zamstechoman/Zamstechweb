@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger)
 const serviceCards = [
   { number: '01', title: 'Websites & digital experiences', text: 'Clear, considered websites built around your customers and the way your team works.', icon: Globe2, href: '/services/web-development', tone: 'mint' },
   { number: '02', title: 'Software & business systems', text: 'Purposeful applications and connected workflows that make everyday work easier.', icon: Workflow, href: '/services/business-software', tone: 'blue' },
-  { number: '03', title: 'Cloud, hosting & IT', text: 'Practical infrastructure and responsive support for the technology you rely on.', icon: CloudCog, href: '/services/cloud', tone: 'coral' },
+  { number: '03', title: 'Cloud, hosting & IT', text: 'Practical infrastructure and responsive support for the technology you rely on.', icon: CloudCog, href: '/services/website-hosting', tone: 'coral' },
 ]
 
 const capabilities = [
@@ -125,9 +125,9 @@ function HomePage() {
       <section className="lab-preview-section">
         <div className="lab-preview-art" data-reveal aria-hidden="true"><div className="lab-ring lab-ring-a" /><div className="lab-ring lab-ring-b" /><div className="lab-preview-core"><span /><i /></div><div className="lab-preview-dot" /></div>
         <div className="lab-preview-copy" data-reveal>
-          <span className="eyebrow"><span className="eyebrow-dot" /> Interactive lab · In development</span>
+          <span className="eyebrow"><span className="eyebrow-dot" /> Interactive lab · Study 001</span>
           <h2>Curiosity is<br />part of the craft.</h2>
-          <p>A browser-based space to explore materials, light, and motion is taking shape as part of the next build stages.</p>
+          <p>Explore a real-time 3D material study. Change its surface, color, lighting, and orientation in your browser.</p>
           <Link to="/interactive-lab" className="text-link">Visit the interactive lab <ArrowUpRight size={15} /></Link>
         </div>
         <span className="lab-coordinate">STUDY 001 <i /> MATERIAL / LIGHT</span>
@@ -177,10 +177,10 @@ function HomePage() {
       </section>
 
       <section className="journal-section">
-        <div className="journal-heading" data-reveal><div><span className="eyebrow"><span className="eyebrow-dot" /> From the journal</span><h2>Useful ideas.<br /><span>Less jargon.</span></h2></div><p>Practical technology notes and explainers are being prepared for the journal.</p></div>
+        <div className="journal-heading" data-reveal><div><span className="eyebrow"><span className="eyebrow-dot" /> From the journal</span><h2>Useful ideas.<br /><span>Less jargon.</span></h2></div><p>Locally authored guides for making practical technology decisions. This is not a live news feed.</p></div>
         <div className="journal-preview-grid">
-          <article className="journal-preview" data-reveal><span>COMING UP&nbsp; / &nbsp;WEB</span><h3>When is a business website ready to become a web application?</h3><p>A practical look at the signs that a workflow needs more than another page.</p></article>
-          <article className="journal-preview" data-reveal><span>COMING UP&nbsp; / &nbsp;CLOUD</span><h3>What to consider before choosing website hosting</h3><p>Traffic, backups, support, and the questions worth asking first.</p></article>
+          <Link className="journal-preview" data-reveal to="/blog/website-or-web-application"><span>WEB DEVELOPMENT</span><h3>When does a website need to become a web application?</h3><p>A practical look at the signs that a workflow needs more than another page.</p></Link>
+          <Link className="journal-preview" data-reveal to="/blog/choosing-business-hosting"><span>HOSTING & CLOUD</span><h3>Choosing website hosting: the questions that matter first</h3><p>Workload, backups, support, and ownership are worth checking before a move.</p></Link>
         </div>
         <Link to="/blog" className="section-link">Visit the journal <ArrowRight size={16} /></Link>
       </section>

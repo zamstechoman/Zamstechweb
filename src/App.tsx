@@ -1,11 +1,22 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react'
-import { Link, NavLink, Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
-import { getService } from './data/services'
+import { ArrowRight, ArrowUpRight, Menu, Search, X } from 'lucide-react'
+import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
+import GlobalTools from './components/GlobalTools'
+import { articles, projects } from './data/editorial'
+import { services } from './data/services'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const ServicesPage = lazy(() => import('./pages/ServicesPage'))
 const ServiceDetailPage = lazy(() => import('./pages/ServiceDetailPage'))
+const ConfigurePage = lazy(() => import('./pages/ConfigurePage'))
+const PortfolioPage = lazy(() => import('./pages/PortfolioPage'))
+const InteractiveLabPage = lazy(() => import('./pages/InteractiveLabPage'))
+const BlogPage = lazy(() => import('./pages/BlogPage'))
+const FAQPage = lazy(() => import('./pages/FAQPage'))
+const AboutPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.AboutPage })))
+const ContactPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.ContactPage })))
+const PrivacyPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.LegalPage })))
+const TermsPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.LegalPage })))
 
 const serviceLinks = [
   { label: 'Website design & development', href: '/services/web-development' },
@@ -28,24 +39,44 @@ const mainLinks = [
   { label: 'About', href: '/about' },
 ]
 
+const searchItems = [
+  ...services.map((service) => ({ title: service.title, category: 'Service', href: `/services/${service.slug}`, content: `${service.summary} ${service.description} ${service.useCases.join(' ')}` })),
+  ...projects.map((project) => ({ title: project.title, category: 'Concept project', href: `/portfolio/${project.slug}`, content: `${project.summary} ${project.objective} ${project.approach} ${project.category}` })),
+  ...articles.map((article) => ({ title: article.title, category: 'Journal', href: `/blog/${article.slug}`, content: `${article.summary} ${article.category} ${article.sections.flatMap((section) => [section.heading, ...section.paragraphs]).join(' ')}` })),
+]
+
 function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
   const [scrolled, setScrolled] = useState(false)
   const menuToggleRef = useRef<HTMLButtonElement>(null)
+  const searchToggleRef = useRef<HTMLButtonElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
   const location = useLocation()
 
-  useEffect(() => setMenuOpen(false), [location.pathname])
+  useEffect(() => { setMenuOpen(false); setSearchOpen(false) }, [location.pathname])
+
+  useEffect(() => {
+    if (searchOpen) searchInputRef.current?.focus()
+  }, [searchOpen])
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && menuOpen) {
+      if (event.key === 'Escape' && (menuOpen || searchOpen)) {
         setMenuOpen(false)
-        menuToggleRef.current?.focus()
+        setSearchOpen(false)
+        if (searchOpen) searchToggleRef.current?.focus()
+        else menuToggleRef.current?.focus()
       }
     }
     document.addEventListener('keydown', closeOnEscape)
     return () => document.removeEventListener('keydown', closeOnEscape)
-  }, [menuOpen])
+  }, [menuOpen, searchOpen])
+
+  const matchingSearchItems = searchTerm.trim()
+    ? searchItems.filter((item) => `${item.title} ${item.category} ${item.content}`.toLowerCase().includes(searchTerm.trim().toLowerCase())).slice(0, 7)
+    : []
 
   useEffect(() => {
     const updateHeader = () => setScrolled(window.scrollY > 20)
@@ -61,9 +92,10 @@ function SiteHeader() {
           <span className="brand-mark" aria-hidden="true"><span /><span /><span /></span>
           <span className="brand-name">amity<span>node</span></span>
         </Link>
-        <button ref={menuToggleRef} className="menu-toggle" type="button" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="primary-navigation" onClick={() => setMenuOpen((open) => !open)}>
+        <div className="header-tools"><button ref={menuToggleRef} className="menu-toggle" type="button" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="primary-navigation" onClick={() => setMenuOpen((open) => !open)}>
           {menuOpen ? <X size={21} /> : <Menu size={21} />}
         </button>
+        <button ref={searchToggleRef} className="search-toggle" type="button" aria-label={searchOpen ? 'Close search' : 'Search services, projects, and articles'} aria-expanded={searchOpen} aria-controls="site-search" onClick={() => setSearchOpen((open) => !open)}>{searchOpen ? <X size={18} /> : <Search size={18} />}</button></div>
         <nav id="primary-navigation" className={`primary-nav${menuOpen ? ' is-open' : ''}`} aria-label="Main navigation">
           <div className="nav-services">
             <NavLink to="/services" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
@@ -79,6 +111,7 @@ function SiteHeader() {
           <Link className="header-cta" to="/configure">Let’s talk <ArrowUpRight size={15} /></Link>
         </nav>
       </div>
+      {searchOpen && <div className="site-search" id="site-search" role="search"><label htmlFor="site-search-input">Search services, projects, and articles</label><input ref={searchInputRef} id="site-search-input" type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Try hosting, Wi-Fi, or workflows" />{searchTerm.trim() && <div className="site-search-results" aria-live="polite">{matchingSearchItems.length ? matchingSearchItems.map((item) => <Link key={item.href} to={item.href} onClick={() => { setSearchOpen(false); setSearchTerm('') }}><span>{item.category}</span><strong>{item.title}</strong><ArrowUpRight size={14} /></Link>) : <p>No matching local content.</p>}</div>}</div>}
     </header>
   )
 }
@@ -93,7 +126,7 @@ function SiteFooter() {
         </div>
         <div className="footer-column footer-services"><span className="footer-label">Services</span>{serviceLinks.map((service) => <Link key={service.href} to={service.href}>{service.label}</Link>)}</div>
         <div className="footer-column"><span className="footer-label">Explore</span><Link to="/portfolio">Portfolio</Link><Link to="/interactive-lab">Interactive lab</Link><Link to="/blog">Journal</Link></div>
-        <div className="footer-column"><span className="footer-label">Company</span><Link to="/about">About Amity Node</Link><Link to="/contact">Contact</Link><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></div>
+        <div className="footer-column"><span className="footer-label">Company</span><Link to="/about">About Amity Node</Link><Link to="/faq">FAQ</Link><Link to="/contact">Contact</Link><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></div>
         <div className="footer-contact"><span className="footer-label">Start a conversation</span><a href="https://wa.me/96878301334" target="_blank" rel="noreferrer">WhatsApp <ArrowUpRight size={14} /></a><span className="footer-country">Oman · Working worldwide</span></div>
       </div>
       <div className="footer-bottom"><span>© {new Date().getFullYear()} Amity Node</span><span>Independent technology, thoughtfully connected.</span><a href="#top" className="back-top">Back to top <ArrowUpRight size={13} /></a></div>
@@ -111,47 +144,56 @@ function RouteScrollReset() {
   return null
 }
 
-const routeTitles: Record<string, { eyebrow: string; description: string }> = {
-  about: { eyebrow: 'The people behind the connection', description: 'A closer look at Amity Node, our approach, and the principles shaping the work.' },
-  services: { eyebrow: 'Technology for real work', description: 'Explore connected digital, software, hosting, and IT capabilities.' },
-  portfolio: { eyebrow: 'Selected work', description: 'Projects and concepts will live here, with a clear distinction between demos and client work.' },
-  'interactive-lab': { eyebrow: 'A place to experiment', description: 'The interactive 3D material and lighting experiment is planned for a later build phase.' },
-  blog: { eyebrow: 'Notes on technology', description: 'Practical guides and locally stored articles are planned for a later build phase.' },
-  contact: { eyebrow: 'Start a conversation', description: 'Contact options and the guided solution configurator are planned for a later build phase.' },
-  configure: { eyebrow: 'Configure your solution', description: 'The multi-step service configurator and WhatsApp enquiry handoff are planned for a later build phase.' },
-  privacy: { eyebrow: 'Privacy', description: 'This page will describe how the website handles information when the contact experience is implemented.' },
-  terms: { eyebrow: 'Terms of use', description: 'Website terms will be published here before the site launches.' },
-}
-
-function RouteIntro({ title, eyebrow, description }: { title: string; eyebrow: string; description: string }) {
-  return <main className="route-page" id="top"><div className="route-index">AMITY NODE <span>·</span> DIGITAL & TECHNOLOGY</div><p className="eyebrow"><span className="eyebrow-dot" />{eyebrow}</p><h1>{title}<span className="route-period">.</span></h1><p className="route-description">{description}</p><Link to="/" className="text-link">Return home <ArrowUpRight size={15} /></Link><div className="route-progress"><span>Phase 01</span><span>Foundation in progress</span><span className="progress-track"><i /></span></div></main>
-}
-
 function NotFound() {
-  return <RouteIntro title="Page not found" eyebrow="404 · Lost in the network" description="That address does not lead anywhere just yet. Head back home to continue exploring Amity Node." />
+  return <main className="route-page" id="top"><div className="route-index">AMITY NODE <span>·</span> 404</div><p className="eyebrow"><span className="eyebrow-dot" /> Address not found</p><h1>Nothing here<span className="route-period">.</span></h1><p className="route-description">That address does not match a page on this site. Return home or explore the service areas.</p><Link to="/" className="text-link">Return home <ArrowUpRight size={15} /></Link></main>
 }
 
-function ConfigureRouteIntro() {
-  const [searchParams] = useSearchParams()
-  const selectedService = getService(searchParams.get('service') ?? undefined)
-  const description = selectedService
-    ? `${selectedService.title} is selected as your starting point. The guided configuration and enquiry flow is planned for Phase 6.`
-    : routeTitles.configure.description
-
-  return <RouteIntro title="Configure your solution" eyebrow={routeTitles.configure.eyebrow} description={description} />
+function RouteMetadata() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    if (pathname.startsWith('/services/') || /^\/blog\/.+/.test(pathname)) return
+    const pages: Record<string, { title: string; description: string }> = {
+      '/': { title: 'Amity Node | Technology, connected with purpose', description: 'Technology, digital experiences, software, hosting, and practical IT support from Amity Node.' },
+      '/services': { title: 'Technology Services | Amity Node', description: 'Explore website, software, hosting, cloud, IT support, networking, and automation services.' },
+      '/portfolio': { title: 'Portfolio Concepts | Amity Node', description: 'Explore clearly labeled concept projects and interface studies from Amity Node.' },
+      '/interactive-lab': { title: 'Interactive 3D Lab | Amity Node', description: 'Experiment with a real-time 3D material, lighting, color, and rotation study.' },
+      '/blog': { title: 'Technology Journal | Amity Node', description: 'Locally authored practical guides about web development, hosting, networks, and technology.' },
+      '/faq': { title: 'Frequently Asked Questions | Amity Node', description: 'Answers to common questions about Amity Node services and project scoping.' },
+      '/about': { title: 'About Amity Node', description: 'Learn about Amity Node’s practical approach to technology, design, and business solutions.' },
+      '/contact': { title: 'Contact Amity Node', description: 'Start a project conversation with Amity Node in Oman or from anywhere worldwide.' },
+      '/configure': { title: 'Configure Your Solution | Amity Node', description: 'Create a project brief and review a WhatsApp or email enquiry for Amity Node.' },
+      '/privacy': { title: 'Privacy | Amity Node', description: 'How this website handles information entered into the local enquiry configurator.' },
+      '/terms': { title: 'Terms of Use | Amity Node', description: 'Terms and limitations for using the Amity Node website and its general information.' },
+    }
+    const page = pages[pathname]
+    if (!page) return
+    document.title = page.title
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]')
+    if (description) description.content = page.description
+    const socialTitle = document.querySelector<HTMLMetaElement>('meta[property="og:title"]')
+    const socialDescription = document.querySelector<HTMLMetaElement>('meta[property="og:description"]')
+    if (socialTitle) socialTitle.content = page.title
+    if (socialDescription) socialDescription.content = page.description
+  }, [pathname])
+  return null
 }
 
 export default function App() {
-  return <><RouteScrollReset /><a className="skip-link" href="#top">Skip to content</a><SiteHeader /><div><Routes>
+  return <><RouteScrollReset /><RouteMetadata /><a className="skip-link" href="#top">Skip to content</a><SiteHeader /><div><Routes>
     <Route path="/" element={<Suspense fallback={<main className="route-loading" aria-label="Loading homepage" />}><HomePage /></Suspense>} />
     <Route path="/services" element={<Suspense fallback={<main className="route-loading" aria-label="Loading services" />}><ServicesPage /></Suspense>} />
     <Route path="/services/:slug" element={<Suspense fallback={<main className="route-loading" aria-label="Loading service details" />}><ServiceDetailPage /></Suspense>} />
-    <Route path="/portfolio" element={<RouteIntro title="Portfolio" {...routeTitles.portfolio} />} />
-    <Route path="/interactive-lab" element={<RouteIntro title="Interactive lab" {...routeTitles['interactive-lab']} />} />
-    <Route path="/blog" element={<RouteIntro title="Journal" {...routeTitles.blog} />} />
-    <Route path="/blog/:slug" element={<RouteIntro title="Article" {...routeTitles.blog} />} />
-    {(['about', 'contact', 'privacy', 'terms'] as const).map((key) => <Route key={key} path={`/${key}`} element={<RouteIntro title={key === 'about' ? 'About Amity Node' : key[0].toUpperCase() + key.slice(1)} {...routeTitles[key]} />} />)}
-    <Route path="/configure" element={<ConfigureRouteIntro />} />
+    <Route path="/portfolio" element={<Suspense fallback={<main className="route-loading" aria-label="Loading portfolio" />}><PortfolioPage /></Suspense>} />
+    <Route path="/portfolio/:slug" element={<Suspense fallback={<main className="route-loading" aria-label="Loading project" />}><PortfolioPage /></Suspense>} />
+    <Route path="/interactive-lab" element={<Suspense fallback={<main className="route-loading" aria-label="Loading interactive lab" />}><InteractiveLabPage /></Suspense>} />
+    <Route path="/blog" element={<Suspense fallback={<main className="route-loading" aria-label="Loading journal" />}><BlogPage /></Suspense>} />
+    <Route path="/blog/:slug" element={<Suspense fallback={<main className="route-loading" aria-label="Loading article" />}><BlogPage /></Suspense>} />
+    <Route path="/faq" element={<Suspense fallback={<main className="route-loading" aria-label="Loading frequently asked questions" />}><FAQPage /></Suspense>} />
+    <Route path="/about" element={<Suspense fallback={<main className="route-loading" aria-label="Loading About page" />}><AboutPage /></Suspense>} />
+    <Route path="/contact" element={<Suspense fallback={<main className="route-loading" aria-label="Loading Contact page" />}><ContactPage /></Suspense>} />
+    <Route path="/privacy" element={<Suspense fallback={<main className="route-loading" aria-label="Loading Privacy page" />}><PrivacyPage type="privacy" /></Suspense>} />
+    <Route path="/terms" element={<Suspense fallback={<main className="route-loading" aria-label="Loading Terms page" />}><TermsPage type="terms" /></Suspense>} />
+    <Route path="/configure" element={<Suspense fallback={<main className="route-loading" aria-label="Loading configurator" />}><ConfigurePage /></Suspense>} />
     <Route path="*" element={<NotFound />} />
-  </Routes></div><SiteFooter /></>
+  </Routes></div><SiteFooter /><GlobalTools /></>
 }
