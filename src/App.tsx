@@ -1,6 +1,8 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ArrowRight, ArrowUpRight, Menu, Search, X } from 'lucide-react'
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import GlobalTools from './components/GlobalTools'
 import { articles, projects } from './data/editorial'
 import { services } from './data/services'
@@ -17,6 +19,8 @@ const AboutPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ 
 const ContactPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.ContactPage })))
 const PrivacyPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.LegalPage })))
 const TermsPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.LegalPage })))
+
+gsap.registerPlugin(ScrollTrigger)
 
 const serviceLinks = [
   { label: 'Website design & development', href: '/services/web-development' },
@@ -178,8 +182,76 @@ function RouteMetadata() {
   return null
 }
 
+function RouteMotion({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation()
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const content = contentRef.current
+    if (!content || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let context: gsap.Context | undefined
+    let frame = 0
+    let routeObserver: MutationObserver | undefined
+
+    const scheduleMotion = () => {
+      window.cancelAnimationFrame(frame)
+      frame = window.requestAnimationFrame(() => {
+        const main = content.querySelector<HTMLElement>('main:not(.route-loading)')
+        if (!main) return
+        routeObserver?.disconnect()
+        if (main.classList.contains('home-page')) return
+
+        context = gsap.context(() => {
+          const blocks = gsap.utils.toArray<HTMLElement>(
+            'main:not(.home-page) > :not(.reading-progress), main > .configure-layout > *, main > .portfolio-detail-top, main > .portfolio-detail-visual, main > .portfolio-detail-copy, main > .article-layout > *, main > .related-articles, main > .service-detail-hero > *, main .article-body > section',
+          )
+          const cards = gsap.utils.toArray<HTMLElement>(
+            'main .service-catalog-card, main .portfolio-card, main .blog-card, main .project-card, main .service-preview, main .journal-preview, main .process-step, main .capability-item, main .service-faq, main .service-option, main .service-workflow-step, main .principle-list article, main .related-service',
+          )
+          const targets = [...new Set([...blocks, ...cards])]
+          if (!targets.length) return
+
+          targets.forEach((element, index) => {
+            if (element.getBoundingClientRect().top > window.innerHeight * 0.94) {
+              gsap.set(element, { autoAlpha: 0, y: 28, x: index % 2 === 0 ? -10 : 10 })
+            }
+          })
+
+          ScrollTrigger.batch(targets, {
+            start: 'top 91%',
+            once: true,
+            onEnter: (elements) => gsap.to(elements, {
+              autoAlpha: 1,
+              x: 0,
+              y: 0,
+              duration: 0.78,
+              ease: 'power3.out',
+              stagger: 0.07,
+              overwrite: 'auto',
+            }),
+          })
+        }, main)
+        ScrollTrigger.refresh()
+      })
+    }
+
+    routeObserver = new MutationObserver(scheduleMotion)
+    routeObserver.observe(content, { childList: true, subtree: true })
+    scheduleMotion()
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      routeObserver?.disconnect()
+      context?.revert()
+    }
+  }, [pathname])
+
+  return <div ref={contentRef}>{children}</div>
+}
+
 export default function App() {
-  return <><RouteScrollReset /><RouteMetadata /><a className="skip-link" href="#top">Skip to content</a><SiteHeader /><div><Routes>
+  return <><RouteScrollReset /><RouteMetadata /><a className="skip-link" href="#top">Skip to content</a><SiteHeader /><RouteMotion><Routes>
     <Route path="/" element={<Suspense fallback={<main className="route-loading" aria-label="Loading homepage" />}><HomePage /></Suspense>} />
     <Route path="/services" element={<Suspense fallback={<main className="route-loading" aria-label="Loading services" />}><ServicesPage /></Suspense>} />
     <Route path="/services/:slug" element={<Suspense fallback={<main className="route-loading" aria-label="Loading service details" />}><ServiceDetailPage /></Suspense>} />
@@ -195,5 +267,5 @@ export default function App() {
     <Route path="/terms" element={<Suspense fallback={<main className="route-loading" aria-label="Loading Terms page" />}><TermsPage type="terms" /></Suspense>} />
     <Route path="/configure" element={<Suspense fallback={<main className="route-loading" aria-label="Loading configurator" />}><ConfigurePage /></Suspense>} />
     <Route path="*" element={<NotFound />} />
-  </Routes></div><SiteFooter /><GlobalTools /></>
+  </Routes></RouteMotion><SiteFooter /><GlobalTools /></>
 }

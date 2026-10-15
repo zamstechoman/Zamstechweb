@@ -3,9 +3,10 @@ import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Observer } from 'gsap/Observer'
 import * as THREE from 'three'
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, Observer)
 
 const chapters = [
   {
@@ -150,6 +151,7 @@ export default function CinematicScroll() {
   const progressTextRef = useRef<HTMLSpanElement>(null)
   const cameraPath = useRef({ ...chapters[0].camera })
   const targetPath = useRef({ ...chapters[0].target })
+  const activeChapterRef = useRef(0)
   const [webglUnavailable, setWebglUnavailable] = useState(false)
 
   useEffect(() => {
@@ -166,6 +168,9 @@ export default function CinematicScroll() {
     let resizeObserver: ResizeObserver | undefined
     let frame = 0
     let context: gsap.Context | undefined
+    let inputObserver: Observer | undefined
+    let navigationTimer = 0
+    let navigating = false
 
     try {
       const compact = window.matchMedia('(max-width: 760px)').matches
@@ -230,6 +235,7 @@ export default function CinematicScroll() {
               scrub: 0.8,
               invalidateOnRefresh: true,
               onUpdate: (trigger) => {
+                activeChapterRef.current = Math.min(Math.floor(trigger.progress * chapters.length), chapters.length - 1)
                 if (meter) meter.style.width = `${trigger.progress * 100}%`
                 if (value) value.textContent = `${Math.round(trigger.progress * 100).toString().padStart(3, '0')}%`
               },
@@ -247,6 +253,34 @@ export default function CinematicScroll() {
             }
           })
         }, wrapper)
+
+        const navigateChapter = (direction: number) => {
+          if (navigating) return
+          const current = activeChapterRef.current
+          const next = THREE.MathUtils.clamp(current + direction, 0, chapters.length - 1)
+
+          if (next === current) {
+            inputObserver?.disable()
+            window.scrollBy({ top: direction * window.innerHeight * 0.9, behavior: 'smooth' })
+            navigationTimer = window.setTimeout(() => inputObserver?.enable(), 850)
+            return
+          }
+
+          navigating = true
+          const scrollRange = Math.max(wrapper.offsetHeight - window.innerHeight, 0)
+          const scrollTop = wrapper.getBoundingClientRect().top + window.scrollY + scrollRange * (next / chapters.length)
+          window.scrollTo({ top: scrollTop, behavior: 'smooth' })
+          navigationTimer = window.setTimeout(() => { navigating = false }, 850)
+        }
+
+        inputObserver = Observer.create({
+          target: wrapper,
+          type: 'wheel,touch',
+          tolerance: 42,
+          preventDefault: true,
+          onUp: () => navigateChapter(-1),
+          onDown: () => navigateChapter(1),
+        })
       } else {
         chapterRefs.current.forEach((chapter) => {
           if (chapter) gsap.set(chapter, { clearProps: 'all' })
@@ -259,6 +293,8 @@ export default function CinematicScroll() {
     }
 
     return () => {
+      window.clearTimeout(navigationTimer)
+      inputObserver?.kill()
       context?.revert()
       window.cancelAnimationFrame(frame)
       resizeObserver?.disconnect()
