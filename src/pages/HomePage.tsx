@@ -1,10 +1,10 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { ArrowDown, ArrowRight, ArrowUpRight, Boxes, CloudCog, CodeXml, Cpu, Globe2, Layers3, ShieldCheck, Workflow } from 'lucide-react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
+import { ArrowRight, ArrowUpRight, Boxes, CloudCog, CodeXml, Cpu, Globe2, Layers3, ShieldCheck, Workflow } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const NetworkScene = lazy(() => import('../components/NetworkScene'))
+const CinematicScroll = lazy(() => import('../components/CinematicScroll'))
 gsap.registerPlugin(ScrollTrigger)
 
 const serviceCards = [
@@ -22,19 +22,6 @@ const capabilities = [
   { icon: Layers3, label: 'Automation & integration' },
 ]
 
-function RotatingPhrase() {
-  const phrases = ['Digital experiences', 'Connected systems', 'Modern web solutions', 'Useful technology']
-  const [activePhrase, setActivePhrase] = useState(0)
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const interval = window.setInterval(() => setActivePhrase((index) => (index + 1) % phrases.length), 3600)
-    return () => window.clearInterval(interval)
-  }, [phrases.length])
-
-  return <span className="rotating-phrase" aria-live="off" key={activePhrase}>{phrases[activePhrase]}</span>
-}
-
 function HomePage() {
   const pageRef = useRef<HTMLElement>(null)
 
@@ -42,14 +29,6 @@ function HomePage() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const context = gsap.context(() => {
-      const entrance = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      entrance
-        .fromTo('[data-hero-kicker]', { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.65 })
-        .fromTo('[data-hero-title]', { y: 34, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.85 }, '-=0.34')
-        .fromTo('[data-hero-support]', { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6 }, '-=0.42')
-        .fromTo('[data-hero-actions]', { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55 }, '-=0.3')
-        .fromTo('[data-hero-scene]', { scale: 0.92, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 1.15, ease: 'power2.out' }, '-=0.95')
-
       gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
         gsap.fromTo(element, { y: 26, autoAlpha: 0 }, {
           y: 0,
@@ -60,11 +39,6 @@ function HomePage() {
         })
       })
 
-      gsap.to('[data-hero-scene]', {
-        y: 54,
-        ease: 'none',
-        scrollTrigger: { trigger: '.home-hero', start: 'top top', end: 'bottom top', scrub: 0.7 },
-      })
     }, pageRef)
 
     return () => context.revert()
@@ -72,27 +46,9 @@ function HomePage() {
 
   return (
     <main className="home-page" id="top" ref={pageRef}>
-      <section className="home-hero">
-        <div className="hero-copy">
-          <p className="eyebrow" data-hero-kicker><span className="eyebrow-dot" /> Technology · Digital · IT</p>
-          <h1 data-hero-title>Technology that moves<br /><span>your business <em>forward.</em></span></h1>
-          <div className="hero-rotator" data-hero-support><span className="rotator-label">We build</span><RotatingPhrase /></div>
-          <p className="hero-description" data-hero-support>From the first idea to the systems that keep it running, we connect thoughtful design with technology that works in the real world.</p>
-          <div className="hero-actions" data-hero-actions>
-            <Link to="/services" className="button button-primary">Explore our services <ArrowRight size={16} /></Link>
-            <Link to="/configure" className="text-link">Configure your solution <ArrowUpRight size={15} /></Link>
-          </div>
-          <div className="hero-note"><span className="note-line" />Based in Oman. Open to the world.</div>
-        </div>
-        <div className="hero-visual" data-hero-scene>
-          <div className="visual-halo" />
-          <Suspense fallback={<div className="scene-loading" aria-hidden="true" />}>
-            <NetworkScene />
-          </Suspense>
-          <div className="visual-caption"><span>AN / 01</span><span>Connected systems</span></div>
-        </div>
-        <a href="#introduction" className="scroll-cue" aria-label="Scroll to introduction"><span>Scroll to explore</span><ArrowDown size={15} /></a>
-      </section>
+      <Suspense fallback={<section className="cinematic-loading" aria-label="Loading cinematic introduction" />}>
+        <CinematicScroll />
+      </Suspense>
 
       <section className="intro-section" id="introduction">
         <div className="section-index" data-reveal>01 <span>/</span> The idea</div>

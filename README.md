@@ -24,4 +24,6 @@ No environment variables or backend services are required. The configurator crea
 
 The concept portfolio is explicitly labeled as concept work. Journal articles are local editorial content, not a live news feed. The interactive lab requires browser WebGL and includes a fallback when WebGL is unavailable.
 
+The homepage opens with an original procedural Three.js city scene and GSAP ScrollTrigger camera choreography, inspired by the pinned-scene storytelling in [Codrops' cinematic scroll animation demo](https://github.com/JosephASG/codrops-cinematic-scroll-animations). The reference's code and 3D model are not included in this project.
+
 The production hostname is not configured in this repository. Add the final domain before publishing a canonical URL or absolute sitemap; a sitemap with an assumed hostname would be misleading.
