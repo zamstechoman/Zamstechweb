@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { mediaQueryMatches, observeResize } from '../utils/browser'
 
 export default function NetworkScene() {
   const hostRef = useRef<HTMLDivElement>(null)
@@ -14,8 +15,8 @@ export default function NetworkScene() {
     let resizeObserver: ResizeObserver | undefined
 
     try {
-      const compact = window.matchMedia('(max-width: 760px)').matches
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const compact = mediaQueryMatches('(max-width: 760px)')
+      const reducedMotion = mediaQueryMatches('(prefers-reduced-motion: reduce)')
       renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !compact, powerPreference: 'low-power' })
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, compact ? 1.2 : 1.6))
       renderer.outputColorSpace = THREE.SRGBColorSpace
@@ -138,8 +139,7 @@ export default function NetworkScene() {
         renderer?.setSize(width, height, false)
         renderer?.render(scene, camera)
       }
-      resizeObserver = new ResizeObserver(resize)
-      resizeObserver.observe(host)
+      resizeObserver = observeResize(host, resize)
       resize()
 
       const render = () => {

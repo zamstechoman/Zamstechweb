@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Observer } from 'gsap/Observer'
 import * as THREE from 'three'
+import { mediaQueryMatches, observeResize } from '../utils/browser'
 
 gsap.registerPlugin(ScrollTrigger, Observer)
 
@@ -159,7 +160,7 @@ export default function CinematicScroll() {
     const host = canvasRef.current
     if (!wrapper || !host) return
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reducedMotion = mediaQueryMatches('(prefers-reduced-motion: reduce)')
     if (reducedMotion) wrapper.classList.add('is-reduced-motion')
 
     let renderer: THREE.WebGLRenderer | undefined
@@ -173,7 +174,7 @@ export default function CinematicScroll() {
     let navigating = false
 
     try {
-      const compact = window.matchMedia('(max-width: 760px)').matches
+      const compact = mediaQueryMatches('(max-width: 760px)')
       renderer = new THREE.WebGLRenderer({ alpha: false, antialias: !compact, powerPreference: 'low-power' })
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, compact ? 1.2 : 1.55))
       renderer.outputColorSpace = THREE.SRGBColorSpace
@@ -207,8 +208,7 @@ export default function CinematicScroll() {
         renderer.setSize(width, height, false)
         renderer.render(scene!, camera)
       }
-      resizeObserver = new ResizeObserver(resize)
-      resizeObserver.observe(host)
+      resizeObserver = observeResize(host, resize)
       resize()
 
       const render = () => {

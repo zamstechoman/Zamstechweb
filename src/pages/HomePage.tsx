@@ -3,6 +3,8 @@ import { ArrowRight, ArrowUpRight, Boxes, CloudCog, CodeXml, Cpu, Globe2, Layers
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { mediaQueryMatches } from '../utils/browser'
+import ProjectMockup from '../components/ProjectMockup'
 
 const CinematicScroll = lazy(() => import('../components/CinematicScroll'))
 gsap.registerPlugin(ScrollTrigger)
@@ -26,7 +28,7 @@ function HomePage() {
   const pageRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (mediaQueryMatches('(prefers-reduced-motion: reduce)')) return
 
     const context = gsap.context(() => {
       const revealTargets = gsap.utils.toArray<HTMLElement>('[data-reveal]')
@@ -53,6 +55,30 @@ function HomePage() {
         gsap.to(ringA, { rotation: 18, ease: 'none', scrollTrigger: studyMotion })
         gsap.to(ringB, { rotation: -16, ease: 'none', scrollTrigger: studyMotion })
         gsap.to(core, { rotation: 62, scale: 1.08, ease: 'none', scrollTrigger: studyMotion })
+      }
+
+      const cloudDiagram = pageRef.current?.querySelector('.cloud-topology')
+      if (cloudDiagram) {
+        const nodes = gsap.utils.toArray<HTMLElement>('.cloud-topology-node', cloudDiagram)
+        const links = gsap.utils.toArray<HTMLElement>('.cloud-link', cloudDiagram)
+        const diagramTrigger = { trigger: cloudDiagram, start: 'top 72%', end: 'center center' }
+
+        gsap.from(nodes, {
+          autoAlpha: 0,
+          y: 18,
+          scale: 0.96,
+          duration: 0.75,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: { ...diagramTrigger, once: true },
+        })
+        gsap.fromTo(links, { scaleX: 0, autoAlpha: 0.2 }, {
+          scaleX: 1,
+          autoAlpha: 1,
+          transformOrigin: 'left center',
+          ease: 'none',
+          scrollTrigger: { ...diagramTrigger, scrub: 0.8 },
+        })
       }
 
       gsap.utils.toArray<HTMLElement>('.project-visual').forEach((visual) => {
@@ -101,6 +127,25 @@ function HomePage() {
         <Link to="/services" className="section-link">See all services <ArrowRight size={16} /></Link>
       </section>
 
+      <section className="cloud-feature-section">
+        <div className="cloud-feature-copy" data-reveal>
+          <span className="eyebrow"><span className="eyebrow-dot" /> Cloud / hosting / continuity</span>
+          <h2>Start with the workload.<br /><span>Choose the cloud second.</span></h2>
+          <p>Hosting should fit the site, team, and support needs behind it. Compare the practical details before committing to a provider or a migration.</p>
+          <Link to="/services/vps-cloud" className="text-link">Explore hosting and cloud <ArrowUpRight size={15} /></Link>
+          <div className="cloud-principles"><div><b>01</b><span>Right-sized resources</span></div><div><b>02</b><span>Clear account ownership</span></div><div><b>03</b><span>Backups and recovery planned</span></div></div>
+        </div>
+        <div className="cloud-topology" aria-label="Diagram showing a workload connected to hosting, backups, and support">
+          <div className="cloud-topology-grid" />
+          <div className="cloud-link cloud-link-workload" /><div className="cloud-link cloud-link-backup" /><div className="cloud-link cloud-link-support" />
+          <div className="cloud-topology-node cloud-workload-node"><span><Workflow size={17} /></span><b>YOUR WORKLOAD</b><small>Site / application</small></div>
+          <div className="cloud-topology-node cloud-host-node"><span><CloudCog size={20} /></span><b>HOSTING</b><small>Fit the requirement</small></div>
+          <div className="cloud-topology-node cloud-backup-node"><span><ShieldCheck size={17} /></span><b>RECOVERY</b><small>Backups / access</small></div>
+          <div className="cloud-topology-node cloud-support-node"><span><Cpu size={17} /></span><b>SUPPORT</b><small>People / ownership</small></div>
+          <div className="cloud-topology-caption"><span>INFRASTRUCTURE MAP</span><span>PROVIDER OPTIONS / REVIEWED TOGETHER</span></div>
+        </div>
+      </section>
+
       <section className="lab-preview-section">
         <div className="lab-preview-art" data-reveal aria-hidden="true"><div className="lab-ring lab-ring-a" /><div className="lab-ring lab-ring-b" /><div className="lab-preview-core"><span /><i /></div><div className="lab-preview-dot" /></div>
         <div className="lab-preview-copy" data-reveal>
@@ -119,17 +164,11 @@ function HomePage() {
         </div>
         <div className="project-grid">
           <article className="project-card" data-reveal>
-            <div className="project-visual project-visual-ops" aria-label="Concept operations dashboard interface preview" role="img">
-              <div className="mock-toolbar"><span className="mock-brand"><i /> north / field</span><span>Overview&nbsp;&nbsp; Work&nbsp;&nbsp; Reports</span><b>Today ↗</b></div>
-              <div className="mock-dashboard"><div className="mock-sidebar"><span /><span /><span /><span /></div><div className="mock-main"><div className="mock-heading"><span>Good morning, team</span><i>● ● ●</i></div><div className="mock-metrics"><span /><span /><span /></div><div className="mock-table"><i /><i /><i /><i /></div></div></div>
-            </div>
+            <ProjectMockup visual="ops" title="Operations, in focus" compact />
             <div className="project-meta"><div><span className="concept-label">Concept project</span><h3>Operations, in focus</h3><p>A calmer interface concept for everyday team coordination.</p></div><ArrowUpRight size={18} aria-hidden="true" /></div>
           </article>
           <article className="project-card" data-reveal>
-            <div className="project-visual project-visual-web" aria-label="Concept storefront website interface preview" role="img">
-              <div className="web-mock-nav"><span>FORM / OBJECT</span><span>Objects&nbsp;&nbsp; Studio&nbsp;&nbsp; Journal</span><i>Bag (0)</i></div>
-              <div className="web-mock-body"><span>OBJECTS FOR SLOWER LIVING</span><strong>Made to<br />stay.</strong><i>Explore the collection&nbsp; ↗</i><div className="web-mock-object"><b /><i /></div></div>
-            </div>
+            <ProjectMockup visual="web" title="Commerce with character" compact />
             <div className="project-meta"><div><span className="concept-label">Concept project</span><h3>Commerce with character</h3><p>A responsive storefront direction with room for the product to speak.</p></div><ArrowUpRight size={18} aria-hidden="true" /></div>
           </article>
         </div>

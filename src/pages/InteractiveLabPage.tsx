@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { RotateCcw } from 'lucide-react'
 import * as THREE from 'three'
+import { mediaQueryMatches, observeResize } from '../utils/browser'
 
 type MaterialChoice = 'Metal' | 'Glass-like' | 'Ceramic' | 'Matte'
 
@@ -32,8 +33,8 @@ function InteractiveLabPage() {
     let ring: THREE.Mesh | undefined
 
     try {
-      const compact = window.matchMedia('(max-width: 760px)').matches
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const compact = mediaQueryMatches('(max-width: 760px)')
+      const reducedMotion = mediaQueryMatches('(prefers-reduced-motion: reduce)')
       renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !compact, powerPreference: 'low-power' })
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, compact ? 1.15 : 1.5))
       renderer.outputColorSpace = THREE.SRGBColorSpace
@@ -72,8 +73,7 @@ function InteractiveLabPage() {
         renderer.setSize(width, height, false)
         renderer.render(scene!, camera)
       }
-      resizeObserver = new ResizeObserver(resize)
-      resizeObserver.observe(host)
+      resizeObserver = observeResize(host, resize)
       resize()
       setLoading(false)
 

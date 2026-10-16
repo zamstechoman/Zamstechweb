@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import GlobalTools from './components/GlobalTools'
 import { articles, projects } from './data/editorial'
 import { services } from './data/services'
+import { mediaQueryMatches } from './utils/browser'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const ServicesPage = lazy(() => import('./pages/ServicesPage'))
@@ -188,7 +189,7 @@ function RouteMotion({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const content = contentRef.current
-    if (!content || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!content || mediaQueryMatches('(prefers-reduced-motion: reduce)')) return
 
     let context: gsap.Context | undefined
     let frame = 0
@@ -203,6 +204,13 @@ function RouteMotion({ children }: { children: ReactNode }) {
         if (main.classList.contains('home-page')) return
 
         context = gsap.context(() => {
+          gsap.from(main, {
+            autoAlpha: 0,
+            duration: 0.38,
+            ease: 'power1.out',
+            clearProps: 'all',
+          })
+
           const blocks = gsap.utils.toArray<HTMLElement>(
             'main:not(.home-page) > :not(.reading-progress), main > .configure-layout > *, main > .portfolio-detail-top, main > .portfolio-detail-visual, main > .portfolio-detail-copy, main > .article-layout > *, main > .related-articles, main > .service-detail-hero > *, main .article-body > section',
           )
