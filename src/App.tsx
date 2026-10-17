@@ -158,7 +158,7 @@ function RouteMetadata() {
   useEffect(() => {
     if (pathname.startsWith('/services/') || /^\/blog\/.+/.test(pathname)) return
     const pages: Record<string, { title: string; description: string }> = {
-      '/': { title: 'Amity Node | Technology, connected with purpose', description: 'Technology, digital experiences, software, hosting, and practical IT support from Amity Node.' },
+      '/': { title: 'Amity Node | Software, IT Infrastructure & Digital Solutions', description: 'Amity Node builds practical digital solutions, business software, mobile applications, IT infrastructure, hosting setups, and automation for growing businesses.' },
       '/services': { title: 'Technology Services | Amity Node', description: 'Explore website, software, hosting, cloud, IT support, networking, and automation services.' },
       '/portfolio': { title: 'Portfolio Concepts | Amity Node', description: 'Explore clearly labeled concept projects and interface studies from Amity Node.' },
       '/interactive-lab': { title: 'Interactive 3D Lab | Amity Node', description: 'Experiment with a real-time 3D material, lighting, color, and rotation study.' },

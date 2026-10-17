@@ -12,9 +12,9 @@ gsap.registerPlugin(ScrollTrigger, Observer)
 const chapters = [
   {
     number: '01',
-    label: 'AMITY NODE / CONNECTED TECHNOLOGY',
-    title: 'Technology that moves your business forward.',
-    description: 'Digital experiences, practical software, and dependable IT, brought together around the work you need to do.',
+    label: 'INDEPENDENT DIGITAL TECHNOLOGY STUDIO',
+    title: 'Your business. Connected to what’s next.',
+    description: 'Software, infrastructure, and automation — designed to work together.',
     camera: { x: -30, y: 13, z: 53 },
     target: { x: 0, y: 13, z: 0 },
   },
@@ -315,15 +315,17 @@ export default function CinematicScroll() {
       <div className="cinematic-stage">
         <div className="cinematic-canvas" ref={canvasRef} aria-hidden="true">{webglUnavailable && <div className="cinematic-fallback"><span /><i /><b /></div>}</div>
         <div className="cinematic-vignette" aria-hidden="true" />
-        <div className="cinematic-topline"><Link to="/" className="cinematic-wordmark"><span className="cinematic-mark" />AMITY NODE</Link><span>OMAN / WORLDWIDE</span></div>
+        <div className="cinematic-topline"><Link to="/" className="cinematic-wordmark"><span className="cinematic-mark" />AMITY NODE</Link><span>SOFTWARE / SYSTEMS / INFRASTRUCTURE</span></div>
         <div className="cinematic-scenes">
           {chapters.map((chapter, index) => <article className={`cinematic-chapter cinematic-chapter-${index + 1}`} key={chapter.number} ref={(element) => { chapterRefs.current[index] = element }}>
             <span className="cinematic-chapter-label"><i />{chapter.label}</span>
             <span className="cinematic-number">{chapter.number} <i>/ 06</i></span>
-            {index === 0 ? <h1>{chapter.title}</h1> : <h2>{chapter.title}</h2>}
+            {index === 0
+              ? <h1>Your business.<br />Connected to<br /><span>what’s next.</span></h1>
+              : <h2>{chapter.title}</h2>}
             <p>{chapter.description}</p>
-            {index === 0 && <div className="cinematic-actions"><Link to="/services" className="cinematic-action-primary">Explore services <ArrowRight size={16} /></Link><Link to="/configure" className="cinematic-action-secondary">Configure your solution <ArrowUpRight size={15} /></Link></div>}
-            {index === chapters.length - 1 && <div className="cinematic-actions"><Link to="/configure" className="cinematic-action-primary">Start a conversation <ArrowUpRight size={15} /></Link><Link to="/about" className="cinematic-action-secondary">About Amity Node <ArrowRight size={14} /></Link></div>}
+            {index === 0 && <div className="cinematic-actions"><Link to="/services" className="cinematic-action-primary">Explore what we build <ArrowRight size={16} /></Link><Link to="/contact" className="cinematic-action-secondary">Start a conversation <ArrowUpRight size={15} /></Link></div>}
+            {index === chapters.length - 1 && <div className="cinematic-actions"><Link to="/contact" className="cinematic-action-primary">Start a conversation <ArrowUpRight size={15} /></Link><Link to="/about" className="cinematic-action-secondary">About Amity Node <ArrowRight size={14} /></Link></div>}
           </article>)}
         </div>
         <div className="cinematic-progress"><span className="cinematic-scroll-hint"><ArrowDown size={13} /> SCROLL TO EXPLORE</span><span className="cinematic-progress-value" ref={progressTextRef}>000%</span><div className="cinematic-progress-track"><i ref={progressRef} /></div><span className="cinematic-progress-end">A MORE CONNECTED WAY TO WORK</span></div>
