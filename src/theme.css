@@ -1,0 +1,778 @@
+:root {
+  color-scheme: light;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --surface-tint: #f1f5f9;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-soft: #64748b;
+  --accent: #0284c7;
+  --accent-strong: #0369a1;
+  --accent-secondary: #4f46e5;
+  --border: #e2e8f0;
+  --card-shadow: 0 16px 42px rgba(15, 23, 42, .055);
+}
+
+html,
+body {
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+input,
+textarea,
+select {
+  border-color: var(--border);
+  color: var(--text);
+  background-color: var(--surface);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent);
+  outline-color: rgba(2, 132, 199, .25);
+}
+
+::selection {
+  color: #fff;
+  background: var(--accent);
+}
+
+:focus-visible,
+.home-capability:focus-visible,
+.home-project:focus-visible,
+.home-article:focus-visible {
+  outline-color: var(--accent);
+}
+
+.skip-link {
+  color: #fff;
+  background: var(--accent-strong);
+}
+
+.site-header {
+  background: rgba(248, 250, 252, .9);
+}
+
+.site-header.is-scrolled {
+  border-color: var(--border);
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 5px 22px rgba(15, 23, 42, .045);
+}
+
+.brand-name,
+.nav-link,
+.header-cta,
+.menu-toggle,
+.search-toggle {
+  color: var(--text);
+}
+
+.brand-name > span,
+.nav-caret {
+  color: var(--accent);
+}
+
+.brand-mark span {
+  border-color: var(--accent);
+}
+
+.nav-link::after {
+  background-color: var(--accent);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--accent-strong);
+}
+
+.service-menu,
+.primary-nav,
+.site-search,
+.site-search-results {
+  border-color: var(--border);
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+}
+
+.service-menu-link,
+.menu-all,
+.site-search-results a,
+.site-search-results p {
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.service-menu-link:hover,
+.menu-all,
+.header-cta {
+  color: var(--accent-strong);
+}
+
+.header-cta {
+  border-color: rgba(2, 132, 199, .35);
+}
+
+.header-cta:hover,
+.button-primary {
+  color: #fff;
+  background: var(--accent-strong);
+}
+
+.menu-eyebrow,
+.footer-label {
+  color: var(--text-soft);
+}
+
+.nav-services > .nav-link {
+  color: var(--text);
+}
+
+.home-page {
+  --home-bg: #f8fafc;
+  --home-panel: #ffffff;
+  --home-raised: #f1f5f9;
+  --home-text: #0f172a;
+  --home-muted: #475569;
+  --home-dim: #64748b;
+  --home-cyan: #0284c7;
+  --home-blue: #4f46e5;
+  --home-lime: #0369a1;
+  --home-line: rgba(15, 23, 42, .12);
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+.home-page .cinematic-scroll,
+.home-page .cinematic-stage,
+.home-page .cinematic-canvas {
+  color: var(--text);
+  background-color: #f8fafc;
+}
+
+.home-page .cinematic-canvas {
+  background-image: radial-gradient(ellipse at 70% 53%, rgba(2, 132, 199, .08), transparent 38%);
+}
+
+.home-page .cinematic-vignette {
+  background:
+    linear-gradient(90deg, rgba(248, 250, 252, .96), rgba(248, 250, 252, .76) 48%, rgba(248, 250, 252, .18) 82%),
+    linear-gradient(0deg, rgba(248, 250, 252, .56), transparent 38%, rgba(248, 250, 252, .26));
+}
+
+.home-page .cinematic-topline,
+.home-page .cinematic-chapter-1 .cinematic-chapter-label,
+.home-page .cinematic-chapter-label,
+.home-page .cinematic-number,
+.home-page .cinematic-progress,
+.home-page .cinematic-progress-value,
+.home-page .cinematic-progress-end,
+.home-page .cinematic-coordinate {
+  color: #475569;
+}
+
+.home-page .cinematic-chapter h1,
+.home-page .cinematic-chapter h2 {
+  color: var(--text);
+  text-shadow: none;
+}
+
+.home-page .cinematic-chapter h1 span,
+.home-page .cinematic-chapter h2 span {
+  color: var(--accent-strong);
+}
+
+.home-page .cinematic-chapter > p {
+  color: var(--text-muted);
+}
+
+.home-page .cinematic-action-primary {
+  color: #fff;
+  background: var(--accent-strong);
+}
+
+.home-page .cinematic-action-primary:hover {
+  color: #fff;
+  background: #075985;
+}
+
+.home-page .cinematic-action-secondary {
+  color: var(--text-muted);
+}
+
+.home-page .cinematic-action-secondary:hover {
+  color: var(--accent-strong);
+}
+
+.home-page .cinematic-progress-track {
+  background: rgba(15, 23, 42, .18);
+}
+
+.home-page .cinematic-coordinate {
+  color: #64748b;
+}
+
+.home-principle,
+.home-capabilities,
+.home-transformation,
+.home-work,
+.home-process,
+.home-journal,
+.home-contact {
+  color: var(--text);
+  background-color: var(--surface);
+}
+
+.home-principle {
+  background: linear-gradient(135deg, #fff, #f8fafc);
+}
+
+.home-capabilities,
+.home-journal {
+  background: #f8fafc;
+}
+
+.home-work,
+.home-process,
+.home-contact {
+  background: #fff;
+}
+
+.home-capability,
+.home-project,
+.home-article,
+.home-process-step,
+.home-transformation-panel,
+.home-contact-card {
+  color: var(--text);
+}
+
+.home-capability,
+.home-capability:nth-child(2n) {
+  border-color: var(--border);
+  background: #fff;
+}
+
+.home-capability:hover,
+.home-capability:focus-visible {
+  background: #f1f8fc;
+}
+
+.home-page .software-panel,
+.home-page .system-node,
+.home-page .infrastructure-node,
+.home-page .cloud-layer {
+  border-color: rgba(2, 132, 199, .3);
+  background: linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(239, 246, 255, .94));
+  box-shadow: 0 14px 34px rgba(15, 23, 42, .1);
+}
+
+.home-page .software-panel-back,
+.home-page .cloud-layer-back {
+  border-color: rgba(79, 70, 229, .35);
+}
+
+.home-page .transformation-note,
+.home-page .transformation-tag {
+  border-color: var(--border);
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, .96);
+}
+
+.home-page .system-transformation {
+  border-color: var(--border);
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.home-page .transformation-canvas {
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, .045) 1px, transparent 1px);
+}
+
+.home-page .transformation-toolbar,
+.home-page .transformation-legend {
+  color: var(--text-muted);
+}
+
+.home-page .home-article-art,
+.home-page .home-article-art-2,
+.home-page .home-article-art-3 {
+  border-color: var(--border);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(2, 132, 199, .1), transparent 48%),
+    linear-gradient(135deg, #f8fafc, #eff6ff);
+}
+
+.home-page .home-button-primary {
+  color: #fff;
+  background: var(--accent-strong);
+}
+
+.home-page .home-button-primary:hover {
+  color: #fff;
+  background: #075985;
+}
+
+.home-page .home-contact-actions .home-text-link {
+  color: var(--accent-strong);
+}
+
+.home-page .home-eyebrow,
+.home-page .home-section-index,
+.home-page .home-principle-copy > p:last-child,
+.home-page .home-principle-aside p,
+.home-page .home-section-heading > p,
+.home-page .home-journal-intro > p,
+.home-page .home-project-meta p,
+.home-page .home-process-step p,
+.home-page .home-contact-copy > p {
+  color: var(--text-muted);
+}
+
+.home-page .home-principle-aside > span,
+.home-page .home-section-index span,
+.home-page .home-capability-top svg,
+.home-page .home-capability-link,
+.home-page .home-project-meta > div > span,
+.home-page .home-project-meta > svg,
+.home-page .home-process-number,
+.home-page .home-text-link,
+.home-page .home-article > span,
+.home-page .home-contact-copy h2 span {
+  color: var(--accent-strong);
+}
+
+.home-page .home-text-link,
+.home-page .home-article,
+.home-page .home-project {
+  border-color: var(--border);
+}
+
+.home-page .home-capability-type,
+.home-page .home-process-step > svg {
+  color: var(--text-soft);
+}
+
+.home-page .home-contact-card {
+  border-color: var(--border);
+  background: var(--surface-soft);
+}
+
+.services-section,
+.lab-preview-section,
+.process-section,
+.closing-cta,
+.portfolio-cta,
+.service-detail-cta {
+  color: var(--text);
+  background: #fff;
+}
+
+.services-section .section-heading > p,
+.process-intro > p,
+.portfolio-cta p {
+  color: var(--text-muted);
+}
+
+.services-section .section-heading h2,
+.lab-preview-copy h2,
+.process-intro h2,
+.closing-cta-main h2,
+.portfolio-cta h2,
+.service-detail-cta h2 {
+  color: var(--text);
+}
+
+.service-preview-grid,
+.service-preview,
+.process-steps,
+.process-step {
+  border-color: var(--border);
+}
+
+.service-preview {
+  color: var(--text);
+  background: #fff;
+}
+
+.service-preview:hover,
+.service-preview:focus-visible {
+  background: #f1f8fc;
+}
+
+.service-preview-top,
+.service-preview p,
+.process-step p {
+  color: var(--text-muted);
+}
+
+.service-preview h3,
+.process-step h3 {
+  color: var(--text);
+}
+
+.service-card-link,
+.section-link,
+.process-step > svg {
+  color: var(--accent-strong);
+}
+
+.projects-section,
+.capabilities-section,
+.journal-section,
+.portfolio-listing,
+.blog-listing,
+.related-articles,
+.service-detail-overview,
+.service-workflow-section,
+.company-intro,
+.company-principles,
+.company-areas,
+.contact-options,
+.contact-location-note,
+.faq-content,
+.faq-list {
+  color: var(--text);
+  background: #f1f5f9;
+}
+
+.portfolio-hero,
+.blog-hero,
+.company-hero,
+.faq-hero,
+.lab-page-heading,
+.services-hero,
+.article-header {
+  color: var(--text);
+  background: linear-gradient(135deg, #f8fafc 0%, #fff 58%, #eff6ff 100%);
+}
+
+.portfolio-hero h1,
+.blog-hero h1,
+.company-hero h1,
+.faq-hero h1,
+.lab-page-heading h1,
+.services-hero h1,
+.article-header h1 {
+  color: var(--text);
+}
+
+.portfolio-hero h1 span,
+.blog-hero h1 span,
+.company-hero h1 span,
+.faq-hero h1 span,
+.lab-page-heading h1 span,
+.services-hero h1 span {
+  color: var(--accent-strong);
+}
+
+.portfolio-hero > p:last-child,
+.blog-hero > p:last-child,
+.company-hero > p:last-child,
+.faq-hero > p:last-child,
+.lab-page-heading > p:last-child,
+.services-hero > p:last-child,
+.article-summary {
+  color: var(--text-muted);
+}
+
+.portfolio-page,
+.blog-page,
+.lab-page,
+.company-page,
+.services-page,
+.service-detail-page,
+.faq-page,
+.article-page,
+.portfolio-detail-page,
+.route-page,
+.configure-page,
+.legal-page {
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+.route-page {
+  background: linear-gradient(135deg, #f8fafc, #fff 62%, #eff6ff);
+}
+
+.route-description,
+.route-page > .eyebrow,
+.article-page .article-toc a,
+.article-body p,
+.article-meta,
+.article-toc > span,
+.service-detail-summary,
+.service-challenge p,
+.service-workflow-step p,
+.company-page p,
+.faq-page p,
+.faq-list button {
+  color: var(--text-muted);
+}
+
+.route-page h1,
+.article-body h2,
+.article-header h1,
+.article-meta > button,
+.article-toc a:hover {
+  color: var(--text);
+}
+
+.article-header > .eyebrow,
+.article-header > .text-link,
+.article-page .text-link {
+  color: var(--accent-strong);
+}
+
+.article-meta,
+.article-body .article-disclaimer,
+.article-toc,
+.related-articles > div,
+.related-articles a + a {
+  border-color: var(--border);
+}
+
+.article-body .article-disclaimer {
+  color: var(--text-muted);
+  background: #f1f5f9;
+}
+
+.related-articles a,
+.related-articles a strong {
+  color: var(--text);
+}
+
+.article-page .text-link,
+.route-page .text-link,
+.services-page .text-link,
+.service-detail-page .text-link,
+.company-page .text-link,
+.faq-page .text-link,
+.legal-page .text-link {
+  color: var(--accent-strong);
+}
+
+.blog-card,
+.portfolio-card,
+.service-catalog-card,
+.service-detail-card,
+.contact-options article,
+.faq-list,
+.lab-controls,
+.configure-form-panel,
+.configure-aside,
+.legal-page section {
+  border-color: var(--border);
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.blog-card.featured {
+  border-color: #dbeafe;
+  color: var(--text);
+  background: linear-gradient(125deg, #eff6ff, #fff);
+}
+
+.blog-card.featured > span,
+.blog-card > span {
+  color: var(--accent-strong);
+}
+
+.blog-card h2,
+.blog-card h2 a,
+.blog-card.featured h2,
+.blog-card.featured h2 a,
+.portfolio-card-copy h3 a {
+  color: var(--text);
+}
+
+.blog-card > p,
+.blog-card.featured > p,
+.blog-card > div,
+.blog-card.featured > div {
+  color: var(--text-muted);
+}
+
+.blog-card > div,
+.blog-card.featured > div {
+  border-color: var(--border);
+}
+
+.blog-card > div a,
+.blog-card.featured > div a,
+.blog-search,
+.blog-search input {
+  color: var(--accent-strong);
+}
+
+.portfolio-hero::after,
+.blog-hero::after,
+.company-hero::after,
+.faq-hero::after,
+.lab-page-heading::after {
+  border-color: rgba(2, 132, 199, .14);
+  box-shadow: 0 0 0 42px rgba(2, 132, 199, .035), 0 0 0 84px rgba(79, 70, 229, .025);
+}
+
+.service-catalog-card,
+.service-catalog-card:hover {
+  background: #fff;
+}
+
+.service-filter.is-active,
+.portfolio-filters button.active,
+.blog-categories button.active {
+  border-color: var(--accent-strong);
+  color: #fff;
+  background: var(--accent-strong);
+}
+
+.service-filter,
+.portfolio-filters button,
+.blog-categories button {
+  border-radius: 6px;
+  border-color: var(--border);
+  color: var(--text-muted);
+  background: #fff;
+}
+
+.service-filter:hover,
+.portfolio-filters button:hover,
+.blog-categories button:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.lab-canvas-panel {
+  border-color: var(--border);
+  background: radial-gradient(ellipse at 50% 48%, rgba(2, 132, 199, .08), transparent 62%), #f8fafc;
+}
+
+.lab-controls,
+.configure-form-panel,
+.configure-aside {
+  color: var(--text);
+  background: #fff;
+}
+
+.configure-page,
+.portfolio-detail-page {
+  background: linear-gradient(145deg, #f8fafc, #fff 65%, #eff6ff);
+}
+
+.configure-heading,
+.configure-heading h1,
+.configure-step-content h2,
+.portfolio-detail-copy h1,
+.service-detail-copy h1,
+.service-detail-section-heading h2,
+.company-page h1,
+.company-page h2,
+.faq-page h1,
+.faq-page h2,
+.legal-page h1,
+.legal-page h2 {
+  color: var(--text);
+}
+
+.configure-heading > p,
+.configure-aside > p,
+.configure-step-content > p,
+.services-hero-description,
+.services-hero-index,
+.service-detail-cta p,
+.return-services,
+.legal-page p {
+  color: var(--text-muted);
+}
+
+.service-detail-page .service-detail-cta,
+.company-page .company-principles,
+.legal-page,
+.faq-page .faq-hero {
+  color: var(--text);
+  background: linear-gradient(135deg, #f8fafc, #fff 60%, #eff6ff);
+}
+
+.company-page .contact-options article {
+  border-color: var(--border);
+  color: var(--text);
+  background: #fff;
+}
+
+.company-page .contact-options article:hover {
+  background: #f1f8fc;
+}
+
+.service-detail-cta .return-services {
+  border-color: var(--border);
+}
+
+.site-footer {
+  border-color: var(--border);
+  color: var(--text);
+  background: #fff;
+}
+
+.footer-column > a,
+.footer-contact > a,
+.footer-country,
+.footer-bottom,
+.back-top {
+  color: var(--text-muted);
+}
+
+.footer-contact > a,
+.footer-column > a:hover,
+.back-top:hover {
+  color: var(--accent-strong);
+}
+
+.footer-bottom {
+  border-color: var(--border);
+}
+
+.case-study-page {
+  background: #fff;
+}
+
+@media (max-width: 760px) {
+  .primary-nav {
+    border-color: var(--border);
+    background: rgba(255, 255, 255, .99);
+    box-shadow: 0 16px 26px rgba(15, 23, 42, .08);
+  }
+
+  .primary-nav > .nav-link,
+  .nav-services > .nav-link {
+    border-color: var(--border);
+  }
+
+  .service-menu {
+    background: #f8fafc;
+    box-shadow: none;
+  }
+
+  .service-menu-link {
+    color: var(--text-muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page *,
+  .home-page *::before,
+  .home-page *::after {
+    scroll-behavior: auto !important;
+  }
+}

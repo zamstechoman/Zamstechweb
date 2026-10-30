@@ -98,33 +98,147 @@
             }
         }
 
-        /* Print Optimization for PDF Export */
+        @page {
+            size: A4 portrait;
+            margin: 14mm 13mm 16mm;
+        }
+
         @media print {
+            html,
             body {
-                background: white !important;
-                color: black !important;
-                font-size: 10.5pt;
+                width: auto !important;
+                min-width: 0 !important;
+                background: #fff !important;
+                color: #172033 !important;
+                font-size: 9pt !important;
+                line-height: 1.45 !important;
+                scroll-behavior: auto !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
-            .no-print, nav, button, .action-bars {
+
+            body {
+                margin: 0 !important;
+            }
+
+            .no-print,
+            nav,
+            button,
+            .action-bars,
+            .absolute.pointer-events-none {
                 display: none !important;
             }
+
             .print-only {
                 display: block !important;
             }
+
+            .max-w-7xl {
+                width: 100% !important;
+                max-width: none !important;
+            }
+
             .page-break {
+                break-before: page;
                 page-break-before: always;
             }
-            .glass-card, .bg-white, .bg-slate-50 {
-                background: white !important;
-                border: 1px solid #cbd5e1 !important;
+
+            h1,
+            h2,
+            h3,
+            h4 {
+                break-after: avoid-page;
+                page-break-after: avoid;
+            }
+
+            p,
+            li {
+                orphans: 3;
+                widows: 3;
+            }
+
+            .glass-card,
+            .bg-white,
+            .bg-slate-50 {
+                border-color: #cbd5e1 !important;
+                background: #fff !important;
                 box-shadow: none !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
             }
-            .text-white {
-                color: #0f172a !important;
+
+            .glass-card {
+                padding: 5mm !important;
             }
-            canvas {
+
+            #comparison-matrix,
+            #comparison-matrix .overflow-x-auto,
+            #architecture {
+                overflow: visible !important;
+            }
+
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                font-size: 7.5pt !important;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tr,
+            th,
+            td {
+                break-inside: avoid-page;
+                page-break-inside: avoid;
+            }
+
+            th,
+            td {
+                padding: 2.2mm !important;
+                border-color: #cbd5e1 !important;
+                overflow-wrap: anywhere;
+            }
+
+            #infographics .grid > .glass-card,
+            #executive-summary > .glass-card,
+            #live-metrics .grid > .glass-card,
+            #scenarios .grid > .glass-card,
+            #architecture .grid > .glass-card,
+            #architecture svg,
+            #credits .glass-card,
+            #rfChart,
+            #bandwidthChart {
+                break-inside: avoid-page;
+                page-break-inside: avoid;
+            }
+
+            #infographics .relative.h-64 {
+                height: 54mm !important;
+            }
+
+            canvas,
+            svg,
+            img {
                 max-width: 100% !important;
-                height: auto !important;
+            }
+
+            canvas {
+                max-height: 52mm !important;
+            }
+
+            .text-white {
+                color: #172033 !important;
+            }
+
+            a {
+                color: #075985 !important;
+                text-decoration: none !important;
+            }
+
+            .rounded-2xl {
+                border-radius: 2mm !important;
             }
         }
     </style>

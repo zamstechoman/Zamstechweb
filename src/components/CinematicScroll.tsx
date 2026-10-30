@@ -64,17 +64,17 @@ function createCity(scene: THREE.Scene) {
   const city = new THREE.Group()
   scene.add(city)
 
-  const towerMaterial = new THREE.MeshStandardMaterial({ color: '#101923', metalness: 0.72, roughness: 0.3 })
-  const secondaryMaterial = new THREE.MeshStandardMaterial({ color: '#11151e', metalness: 0.65, roughness: 0.38 })
-  const edgeMaterial = new THREE.LineBasicMaterial({ color: '#59d9e6', transparent: true, opacity: 0.36 })
+  const towerMaterial = new THREE.MeshStandardMaterial({ color: '#cbd8e8', metalness: 0.38, roughness: 0.48 })
+  const secondaryMaterial = new THREE.MeshStandardMaterial({ color: '#e2e8f0', metalness: 0.28, roughness: 0.55 })
+  const edgeMaterial = new THREE.LineBasicMaterial({ color: '#0284c7', transparent: true, opacity: 0.32 })
   const mainTower = new THREE.Mesh(new THREE.BoxGeometry(7.4, 34, 6.6, 1, 1, 1), towerMaterial)
   mainTower.position.y = 17
   city.add(mainTower)
 
-  const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 1.35, 8, 5), new THREE.MeshStandardMaterial({ color: '#15212d', metalness: 0.78, roughness: 0.25 }))
+  const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 1.35, 8, 5), new THREE.MeshStandardMaterial({ color: '#b8c8dd', metalness: 0.58, roughness: 0.34 }))
   crown.position.set(0, 38, 0)
   city.add(crown)
-  const crownLine = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 10, 6), new THREE.MeshBasicMaterial({ color: '#7ef5f0' }))
+  const crownLine = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 10, 6), new THREE.MeshBasicMaterial({ color: '#4f46e5' }))
   crownLine.position.set(0, 43, 0)
   city.add(crownLine)
 
@@ -83,7 +83,7 @@ function createCity(scene: THREE.Scene) {
   city.add(edge)
 
   const windowGeometry = new THREE.BoxGeometry(0.14, 0.34, 0.035)
-  const windowMaterial = new THREE.MeshBasicMaterial({ color: '#50dbe3', transparent: true, opacity: 0.72 })
+  const windowMaterial = new THREE.MeshBasicMaterial({ color: '#0284c7', transparent: true, opacity: 0.5 })
   const frontWindows = new THREE.InstancedMesh(windowGeometry, windowMaterial, 6 * 25)
   const sideWindows = new THREE.InstancedMesh(windowGeometry, windowMaterial, 5 * 25)
   const transform = new THREE.Object3D()
@@ -128,7 +128,7 @@ function createCity(scene: THREE.Scene) {
     city.add(towerEdges)
   })
 
-  const ground = new THREE.GridHelper(110, 70, '#24505b', '#13242c')
+  const ground = new THREE.GridHelper(110, 70, '#60a5fa', '#dbeafe')
   ground.position.y = 0.04
   const gridMaterials = Array.isArray(ground.material) ? ground.material : [ground.material]
   gridMaterials.forEach((material) => {
@@ -137,7 +137,7 @@ function createCity(scene: THREE.Scene) {
   })
   scene.add(ground)
 
-  const orbit = new THREE.Mesh(new THREE.TorusGeometry(15, 0.025, 6, 180), new THREE.MeshBasicMaterial({ color: '#4b92cb', transparent: true, opacity: 0.42 }))
+  const orbit = new THREE.Mesh(new THREE.TorusGeometry(15, 0.025, 6, 180), new THREE.MeshBasicMaterial({ color: '#4f46e5', transparent: true, opacity: 0.34 }))
   orbit.rotation.set(1.04, 0.18, -0.4)
   orbit.position.y = 17
   scene.add(orbit)
@@ -183,15 +183,15 @@ export default function CinematicScroll() {
       host.appendChild(renderer.domElement)
 
       scene = new THREE.Scene()
-      scene.background = new THREE.Color('#05070a')
-      scene.fog = new THREE.FogExp2('#05070a', 0.0075)
+      scene.background = new THREE.Color('#f8fafc')
+      scene.fog = new THREE.FogExp2('#f8fafc', 0.0075)
       camera = new THREE.PerspectiveCamera(43, 1, 0.1, 180)
       camera.position.set(cameraPath.current.x, cameraPath.current.y, cameraPath.current.z)
-      scene.add(new THREE.AmbientLight('#b6d1e8', 0.62))
-      const key = new THREE.DirectionalLight('#d9eeff', 2.4)
+      scene.add(new THREE.AmbientLight('#ffffff', 1.15))
+      const key = new THREE.DirectionalLight('#dbeafe', 2.0)
       key.position.set(12, 32, 18)
       scene.add(key)
-      const cyanLight = new THREE.PointLight('#22d3ee', 160, 90)
+      const cyanLight = new THREE.PointLight('#38bdf8', 95, 90)
       cyanLight.position.set(-14, 20, 20)
       scene.add(cyanLight)
       const blueLight = new THREE.PointLight('#5484ff', 110, 85)

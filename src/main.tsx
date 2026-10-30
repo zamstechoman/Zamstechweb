@@ -5,6 +5,7 @@ import App from './App'
 import './styles.css'
 import './story.css'
 import './homepage.css'
+import './theme.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

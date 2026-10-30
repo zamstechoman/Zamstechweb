@@ -1,14 +1,14 @@
 :root {
   font-family: 'DM Sans', sans-serif;
-  color: #f2f4f1;
-  background: #101314;
+  color: #1e293b;
+  background: #f8fafc;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --ink: #101314;
-  --paper: #f2f4f1;
-  --line: rgba(242, 244, 241, 0.14);
-  --cyan: #75ead4;
-  --blue: #7095ff;
+  --ink: #0f172a;
+  --paper: #f8fafc;
+  --line: rgba(15, 23, 42, 0.12);
+  --cyan: #0284c7;
+  --blue: #4f46e5;
   --display: 'Space Grotesk', sans-serif;
 }
 *, *::before, *::after { box-sizing: border-box; }
