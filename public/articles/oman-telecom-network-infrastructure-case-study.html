@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oman Telecom Network Infrastructure Case Study | Amity Node</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for Interactive Metrics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        amity: {
+                            50: '#f0f7ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            brand: '#0b192c',
+                            accent: '#2563eb'
+                        },
+                        vodafone: '#e60000',
+                        ooredoo: '#ed1c24',
+                        omantel: '#ff6600'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Light Theme Custom Styling */
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Glassmorphism Light Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Interactive 3D Card Hover Effects */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hover-lift:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 20px 35px -10px rgba(14, 165, 233, 0.15);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto !important;
+            }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Print Optimization for PDF Export */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 10.5pt;
+            }
+            .no-print, nav, button, .action-bars {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .glass-card, .bg-white, .bg-slate-50 {
+                background: white !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+            }
+            .text-white {
+                color: #0f172a !important;
+            }
+            canvas {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-800 bg-slate-50 selection:bg-sky-500 selection:text-white">
+
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/blog" target="_top" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center font-extrabold text-white text-xl shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
+                    AN
+                </div>
+                <div>
+                    <span class="font-extrabold text-lg tracking-tight text-slate-900 group-hover:text-sky-600 transition-colors">AMITY NODE</span>
+                    <span class="text-xs text-sky-600 font-mono font-medium block -mt-1">amitynode.com • Telecom Research</span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
+                <a href="#executive-summary" class="hover:text-sky-600 transition-colors">Summary</a>
+                <a href="#live-metrics" class="hover:text-sky-600 transition-colors">Field Data</a>
+                <a href="#comparison-matrix" class="hover:text-sky-600 transition-colors">Comparison</a>
+                <a href="#architecture" class="hover:text-sky-600 transition-colors">Greenfield Core</a>
+                <a href="#scenarios" class="hover:text-sky-600 transition-colors">Performance</a>
+                <a href="#credits" class="hover:text-sky-600 transition-colors">Credits</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="window.print()" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-sky-500/20 transition-all hover:scale-105 active:scale-95">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Download PDF Case Study</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO / BANNER SECTION -->
+    <div class="relative overflow-hidden bg-gradient-to-b from-sky-50 via-white to-slate-50 border-b border-slate-200">
+        <div class="absolute top-10 left-10 w-96 h-96 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-20 right-10 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 relative z-10">
+
+            <!-- Print Header Watermark -->
+            <div class="hidden print-only mb-6 border-b border-slate-300 pb-4">
+                <h1 class="text-2xl font-bold text-slate-900">AMITY NODE TECHNICAL RESEARCH REPORT</h1>
+                <p class="text-xs text-slate-600">Published on amitynode.com • Timestamp: 30-10-2026, 22:40 GST</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="px-3 py-1 bg-sky-100 text-sky-800 border border-sky-300/60 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
+                            Telecommunications Research
+                        </span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 border border-slate-300/60 rounded-full text-xs font-mono font-semibold">
+                            Sultanate of Oman Network Benchmark
+                        </span>
+                    </div>
+                    <div class="text-xs font-mono text-slate-500 flex items-center gap-4">
+                        <span><i class="fa-regular fa-calendar-check text-sky-600 mr-1"></i> Date: <strong>30-10-2026</strong></span>
+                        <span><i class="fa-regular fa-clock text-sky-600 mr-1"></i> Time: <strong>22:40 GST</strong></span>
+                    </div>
+                </div>
+
+                <div>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        Oman Telecom Network Infrastructure<br class="hidden sm:inline"/>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-600 to-indigo-600">Case Study</span>
+                    </h1>
+                    <p class="mt-4 text-base sm:text-lg text-slate-600 max-w-4xl leading-relaxed">
+                        A comparative architectural and empirical performance analysis of Greenfield 5G Cloud-Native deployment versus Legacy Hybrid networks across Vodafone Oman, Ooredoo Oman, and Omantel International Roaming.
+                    </p>
+                </div>
+
+                <!-- AUTHOR & RESEARCH CREDITS (UPDATED TITLES) -->
+                <div id="credits" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-200">
+                    <!-- Seyed Ussain Iqbal Card -->
+                    <div class="glass-card rounded-2xl p-5 border border-slate-200 hover-lift flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-sky-500/20 shrink-0">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase font-mono text-sky-700 font-bold tracking-wider block">Technical, Networking & Data Analysis</span>
+                            <h3 class="text-lg font-bold text-slate-900">Mr. Seyed Ussain Iqbal</h3>
+                            <p class="text-xs font-semibold text-sky-600">Founder, Amity Node</p>
+                        </div>
+                    </div>
+
+                    <!-- Sajad Card -->
+                    <div class="glass-card rounded-2xl p-5 border border-slate-200 hover-lift flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-vodafone text-white flex items-center justify-center text-xl font-bold shadow-md shadow-red-500/20 shrink-0">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase font-mono text-red-600 font-bold tracking-wider block">Telecom Market Field Research</span>
+                            <h3 class="text-lg font-bold text-slate-900">Mr. Sajad</h3>
+                            <p class="text-xs font-semibold text-vodafone">Sales Executive, Vodafone Oman</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CASE STUDY CONTENT CONTAINER -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+
+        <!-- AGENDA & EXECUTIVE SUMMARY SECTION -->
+        <section id="executive-summary" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Table of Contents Sidebar -->
+            <div class="lg:col-span-1 glass-card rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-3">
+                        <i class="fa-solid fa-list-ol text-sky-600"></i>
+                        Case Study Agenda
+                    </h2>
+                    <ul class="space-y-3 text-xs font-medium text-slate-600">
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 font-mono text-xs flex items-center justify-center font-bold">01</span>
+                            <a href="#executive-summary" class="hover:text-sky-600 transition-colors">Executive Summary & Greenfield Concept</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 font-mono text-xs flex items-center justify-center font-bold">02</span>
+                            <a href="#live-metrics" class="hover:text-sky-600 transition-colors">Live Operator Signal Field Data</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 font-mono text-xs flex items-center justify-center font-bold">03</span>
+                            <a href="#comparison-matrix" class="hover:text-sky-600 transition-colors">Technical Comparison Matrix</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 font-mono text-xs flex items-center justify-center font-bold">04</span>
+                            <a href="#infographics" class="hover:text-sky-600 transition-colors">Visual Analytics & Signal Quality</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 font-mono text-xs flex items-center justify-center font-bold">05</span>
+                            <a href="#architecture" class="hover:text-sky-600 transition-colors">Greenfield vs Legacy Core Topology</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 font-mono text-xs flex items-center justify-center font-bold">06</span>
+                            <a href="#scenarios" class="hover:text-sky-600 transition-colors">Real-World Application Benchmarks</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 font-mono text-xs flex items-center justify-center font-bold">07</span>
+                            <a href="#credits" class="hover:text-sky-600 transition-colors">Research Credits & Conclusion</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-200 text-xs text-slate-500 font-mono">
+                    <p><i class="fa-solid fa-circle-info text-sky-600 mr-1"></i> Data collected via radio telemetry interface logs in Muscat, Sultanate of Oman.</p>
+                </div>
+            </div>
+
+            <!-- Executive Summary Text -->
+            <div class="lg:col-span-2 glass-card rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+                <span class="text-xs font-mono text-sky-600 uppercase tracking-widest font-bold">Section 01</span>
+                <h2 class="text-2xl font-bold text-slate-900">Executive Summary</h2>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    In the telecommunications industry, a <strong class="text-slate-900">Greenfield Network</strong> refers to a network built completely from scratch without relying on legacy infrastructure, vintage database schemas, or legacy hardware constraints. When <strong class="text-slate-900">Vodafone Oman</strong> launched as the Sultanate's third mobile operator, it was established purely as a greenfield deployment.
+                </p>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    This research paper, led by <strong class="text-slate-900">Mr. Seyed Ussain Iqbal</strong> (Founder, Amity Node) for technical, networking, and data analysis support, together with field data curated with <strong class="text-slate-900">Mr. Sajad</strong> (Sales Executive, Vodafone Oman), analyzes the operational agility and empirical radio frequency (RF) benchmarks comparing Vodafone Oman, Ooredoo Oman, and Omantel (via an Indian Airtel roaming connection).
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover-lift">
+                        <div class="text-2xl font-extrabold text-vodafone font-mono">22.6 dB</div>
+                        <div class="text-xs font-medium text-slate-500 mt-1">Vodafone Max SNR</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover-lift">
+                        <div class="text-2xl font-extrabold text-emerald-600 font-mono">100% SA</div>
+                        <div class="text-xs font-medium text-slate-500 mt-1">Cloud Core Focus</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover-lift">
+                        <div class="text-2xl font-extrabold text-sky-600 font-mono">20 MHz</div>
+                        <div class="text-xs font-medium text-slate-500 mt-1">Band B3 Channel Width</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVE FIELD METRICS SECTION -->
+        <section id="live-metrics" class="space-y-6">
+            <div>
+                <span class="text-xs font-mono text-sky-600 uppercase tracking-widest font-bold">Section 02</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Live Field Metric Measurements</h2>
+                <p class="text-sm text-slate-500 mt-1">Telemetry log measurements taken at 22:40 GST on 30-10-2026 across active mobile terminals.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- VODAFONE OMAN CARD -->
+                <div class="glass-card rounded-2xl border-2 border-red-200 p-6 flex flex-col justify-between hover-lift relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-bl-full pointer-events-none"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-vodafone text-white">PLMN 422 6</span>
+                                <h3 class="text-xl font-bold text-slate-900 mt-1">Vodafone Oman</h3>
+                            </div>
+                            <span class="px-3 py-1 bg-red-50 text-vodafone border border-red-200 rounded-full text-xs font-mono font-semibold">
+                                NSA Core
+                            </span>
+                        </div>
+
+                        <div class="space-y-2.5 text-xs font-mono">
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Tracking Area Code (TAC)</span>
+                                <span class="text-slate-900 font-bold">41040</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Cell ID</span>
+                                <span class="text-slate-900 font-bold">5233716</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Primary LTE Band</span>
+                                <span class="text-slate-900 font-bold">Band B3 (20 MHz)</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">EARFCN / PCI</span>
+                                <span class="text-slate-900 font-bold">1301 / 46</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">RSRP (Signal Strength)</span>
+                                <span class="text-emerald-600 font-bold">-84 dBm</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">RSRQ (Quality)</span>
+                                <span class="text-slate-900 font-bold">-13 dB</span>
+                            </div>
+                            <div class="flex justify-between py-1.5">
+                                <span class="text-slate-500">SNR (Signal-to-Noise)</span>
+                                <span class="text-vodafone font-bold text-sm">22.6</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-200 bg-slate-50/80 -mx-6 -mb-6 p-4 rounded-b-2xl">
+                        <span class="text-xs text-slate-500 font-mono block mb-1">Secondary Carrier Aggregation:</span>
+                        <span class="px-2 py-0.5 bg-white text-slate-700 text-xs font-mono rounded border border-slate-200 font-semibold">Band B8 (5 MHz)</span>
+                    </div>
+                </div>
+
+                <!-- OOREDOO OMAN CARD -->
+                <div class="glass-card rounded-2xl border-2 border-red-200 p-6 flex flex-col justify-between hover-lift relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-ooredoo/5 rounded-bl-full pointer-events-none"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-ooredoo text-white">PLMN 422 3</span>
+                                <h3 class="text-xl font-bold text-slate-900 mt-1">Ooredoo Oman</h3>
+                            </div>
+                            <span class="px-3 py-1 bg-red-50 text-ooredoo border border-red-200 rounded-full text-xs font-mono font-semibold">
+                                NSA Core
+                            </span>
+                        </div>
+
+                        <div class="space-y-2.5 text-xs font-mono">
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Tracking Area Code (TAC)</span>
+                                <span class="text-slate-900 font-bold">3</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Cell ID</span>
+                                <span class="text-slate-900 font-bold">2614786</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Primary LTE Band</span>
+                                <span class="text-slate-900 font-bold">Band B3 (20 MHz)</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">EARFCN / PCI</span>
+                                <span class="text-slate-900 font-bold">1500 / 169</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">RSRP (Signal Strength)</span>
+                                <span class="text-amber-600 font-bold">-89 dBm</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">RSRQ (Quality)</span>
+                                <span class="text-slate-400 font-semibold italic">N/A</span>
+                            </div>
+                            <div class="flex justify-between py-1.5">
+                                <span class="text-slate-500">SNR (Signal-to-Noise)</span>
+                                <span class="text-amber-600 font-bold text-sm">8.6</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-200 bg-slate-50/80 -mx-6 -mb-6 p-4 rounded-b-2xl">
+                        <span class="text-xs text-slate-500 font-mono block mb-1">Secondary Carrier Aggregation:</span>
+                        <div class="flex gap-1.5">
+                            <span class="px-2 py-0.5 bg-white text-slate-700 text-xs font-mono rounded border border-slate-200 font-semibold">Band B1 (15 MHz)</span>
+                            <span class="px-2 py-0.5 bg-white text-slate-700 text-xs font-mono rounded border border-slate-200 font-semibold">Band B20 (10 MHz)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OMANTEL ROAMING CARD -->
+                <div class="glass-card rounded-2xl border-2 border-orange-200 p-6 flex flex-col justify-between hover-lift relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-bl-full pointer-events-none"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-omantel text-white">PLMN 422 2</span>
+                                <h3 class="text-xl font-bold text-slate-900 mt-1">Omantel (Airtel Roam)</h3>
+                            </div>
+                            <span class="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-mono font-semibold">
+                                SA Mode Active
+                            </span>
+                        </div>
+
+                        <div class="space-y-2.5 text-xs font-mono">
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Tracking Area Code (TAC)</span>
+                                <span class="text-slate-900 font-bold">1012</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Cell ID</span>
+                                <span class="text-slate-900 font-bold">189544963</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Primary LTE Band</span>
+                                <span class="text-slate-900 font-bold">Band B3 (20 MHz)</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">EARFCN / PCI</span>
+                                <span class="text-slate-900 font-bold">1700 / 122</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">RSRP (Signal Strength)</span>
+                                <span class="text-orange-600 font-bold">-96 dBm</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">RSRQ (Quality)</span>
+                                <span class="text-slate-400 font-semibold italic">N/A</span>
+                            </div>
+                            <div class="flex justify-between py-1.5">
+                                <span class="text-slate-500">SNR (Signal-to-Noise)</span>
+                                <span class="text-orange-600 font-bold text-sm">5.6</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-200 bg-slate-50/80 -mx-6 -mb-6 p-4 rounded-b-2xl">
+                        <span class="text-xs text-slate-500 font-mono block mb-1">Secondary Carrier Aggregation:</span>
+                        <span class="px-2 py-0.5 bg-white text-slate-700 text-xs font-mono rounded border border-slate-200 font-semibold">Band B20 (10 MHz)</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- INTERACTIVE COMPARISON MATRIX -->
+        <section id="comparison-matrix" class="glass-card rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <span class="text-xs font-mono text-sky-600 uppercase tracking-widest font-bold">Section 03</span>
+                    <h2 class="text-2xl font-bold text-slate-900">Technical Comparison Matrix</h2>
+                </div>
+
+                <div class="relative no-print">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="matrixSearch" onkeyup="filterMatrix()" placeholder="Search parameters..." class="pl-9 pr-4 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-600 shadow-sm">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse" id="techMatrixTable">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-xs font-mono text-slate-600 uppercase tracking-wider bg-slate-100/70">
+                            <th class="py-3 px-4 font-bold">Technical Parameter</th>
+                            <th class="py-3 px-4 font-bold text-vodafone"><i class="fa-solid fa-signal mr-1"></i> Vodafone Oman</th>
+                            <th class="py-3 px-4 font-bold text-ooredoo"><i class="fa-solid fa-tower-cell mr-1"></i> Ooredoo Oman</th>
+                            <th class="py-3 px-4 font-bold text-omantel"><i class="fa-solid fa-globe mr-1"></i> Omantel (Airtel Roam)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 text-xs font-mono">
+                        <tr class="hover:bg-sky-50/50 transition-colors">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-800">PLMN Code</td>
+                            <td class="py-3 px-4 text-slate-900 font-bold">422 6</td>
+                            <td class="py-3 px-4 text-slate-700">422 3</td>
+                            <td class="py-3 px-4 text-slate-700">422 2</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-800">Network Capabilities</td>
+                            <td class="py-3 px-4 text-emerald-600 font-bold">NSA (Non-Standalone)</td>
+                            <td class="py-3 px-4 text-emerald-600 font-bold">NSA (Non-Standalone)</td>
+                            <td class="py-3 px-4 text-sky-600 font-bold">SA (Standalone)</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-800">Tracking Area Code (TAC)</td>
+                            <td class="py-3 px-4 text-slate-700">41040</td>
+                            <td class="py-3 px-4 text-slate-700">3</td>
+                            <td class="py-3 px-4 text-slate-700">1012</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-800">Cell ID</td>
+                            <td class="py-3 px-4 text-slate-700">5233716</td>
+                            <td class="py-3 px-4 text-slate-700">2614786</td>
+                            <td class="py-3 px-4 text-slate-700">189544963</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-800">Primary Band & Bandwidth</td>
+                            <td class="py-3 px-4 text-slate-700">Band B3 (20.0 MHz)</td>
+                            <td class="py-3 px-4 text-slate-700">Band B3 (20.0 MHz)</td>
+                            <td class="py-3 px-4 text-slate-700">Band B3 (20.0 MHz)</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-800">EARFCN Channel</td>
+                            <td class="py-3 px-4 text-slate-700">1301</td>
+                            <td class="py-3 px-4 text-slate-700">1500</td>
+                            <td class="py-3 px-4 text-slate-700">1700</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-800">Physical Cell ID (PCI)</td>
+                            <td class="py-3 px-4 text-slate-700">46</td>
+                            <td class="py-3 px-4 text-slate-700">169</td>
+                            <td class="py-3 px-4 text-slate-700">122</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors bg-emerald-50/40">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-900">RSRP Signal Strength</td>
+                            <td class="py-3 px-4 text-emerald-600 font-bold">-84 dBm (Best)</td>
+                            <td class="py-3 px-4 text-amber-600 font-semibold">-89 dBm</td>
+                            <td class="py-3 px-4 text-orange-600 font-semibold">-96 dBm</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors bg-emerald-50/40">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-900">Signal-to-Noise Ratio (SNR)</td>
+                            <td class="py-3 px-4 text-emerald-600 font-bold">22.6 (Pristine)</td>
+                            <td class="py-3 px-4 text-amber-600 font-semibold">8.6</td>
+                            <td class="py-3 px-4 text-orange-600 font-semibold">5.6</td>
+                        </tr>
+                        <tr class="hover:bg-sky-50/50 transition-colors">
+                            <td class="py-3 px-4 font-sans font-bold text-slate-800">Carrier Aggregation Bands</td>
+                            <td class="py-3 px-4 text-slate-700">Band B8 (5 MHz)</td>
+                            <td class="py-3 px-4 text-slate-700">Band B1 (15 MHz), Band B20 (10 MHz)</td>
+                            <td class="py-3 px-4 text-slate-700">Band B20 (10 MHz)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- VISUAL INFOGRAPHICS & CHARTS -->
+        <section id="infographics" class="space-y-8">
+            <div>
+                <span class="text-xs font-mono text-sky-600 uppercase tracking-widest font-bold">Section 04</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Visual Analytics & Performance Infographics</h2>
+                <p class="text-sm text-slate-500 mt-1">Graphical telemetry analysis of signal quality metrics and operator spectrum width.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- RSRP & SNR CHART -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between hover-lift">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center justify-between">
+                            <span>Signal Quality Metrics (RSRP vs SNR)</span>
+                            <span class="text-xs font-mono text-slate-400 font-normal">Higher SNR = Lower Noise</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-6">Comparison of signal attenuation (RSRP) and signal-to-noise ratio across terminals.</p>
+                    </div>
+                    <div class="relative h-64 w-full">
+                        <canvas id="rfChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- BANDWIDTH DISTRIBUTION CHART -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between hover-lift">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 mb-1 flex items-center justify-between">
+                            <span>Total Captured LTE Bandwidth (MHz)</span>
+                            <span class="text-xs font-mono text-slate-400 font-normal">Primary + Aggregated</span>
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-6">Aggregate spectrum block width in captured cell sectors.</p>
+                    </div>
+                    <div class="relative h-64 w-full">
+                        <canvas id="bandwidthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ARCHITECTURAL COMPARISON & SVG DIAGRAMS -->
+        <section id="architecture" class="space-y-8 page-break">
+            <div>
+                <span class="text-xs font-mono text-sky-600 uppercase tracking-widest font-bold">Section 05</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Architectural Comparison: Greenfield vs Legacy Hybrid</h2>
+                <p class="text-sm text-slate-500 mt-1">Comparing Vodafone Oman's cloud-native deployment with legacy operator structures.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <!-- GREENFIELD VECTOR DIAGRAM -->
+                <div class="glass-card rounded-2xl p-6 border-2 border-emerald-200 shadow-sm space-y-4 hover-lift">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                        <h3 class="text-base font-bold text-emerald-700 flex items-center gap-2">
+                            <i class="fa-solid fa-cloud"></i>
+                            Vodafone Greenfield Cloud Architecture
+                        </h3>
+                        <span class="text-xs font-mono bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full font-bold">Cloud-Native</span>
+                    </div>
+
+                    <div class="w-full bg-slate-900 p-4 rounded-xl border border-slate-800">
+                        <svg viewBox="0 0 400 180" class="w-full h-auto">
+                            <!-- UE Device -->
+                            <rect x="20" y="70" width="60" height="40" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                            <text x="50" y="95" text-anchor="middle" fill="#fff" font-size="10" font-family="sans-serif" font-weight="bold">5G UE</text>
+
+                            <!-- gNodeB Tower -->
+                            <path d="M 160 110 L 175 50 L 190 110 Z" fill="none" stroke="#10b981" stroke-width="2"/>
+                            <circle cx="175" cy="45" r="7" fill="#10b981"/>
+                            <text x="175" y="125" text-anchor="middle" fill="#9ca3af" font-size="9">gNodeB</text>
+
+                            <!-- Cloud Core Box -->
+                            <rect x="260" y="50" width="120" height="80" rx="8" fill="#064e3b" stroke="#10b981" stroke-width="2"/>
+                            <text x="320" y="75" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">Cloud-Native Core</text>
+                            <text x="320" y="92" text-anchor="middle" fill="#fff" font-size="9">5G SA Microservices</text>
+                            <text x="320" y="108" text-anchor="middle" fill="#9ca3af" font-size="8">API-Driven BSS/OSS</text>
+
+                            <!-- Flow Arrows -->
+                            <path d="M 80 90 L 150 90" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4" class="animate-pulse"/>
+                            <path d="M 195 80 L 255 80" stroke="#10b981" stroke-width="2"/>
+                        </svg>
+                    </div>
+
+                    <ul class="space-y-2 text-xs text-slate-600 font-sans">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> <span><strong>Zero Legacy Overhead:</strong> Completely free from maintenance of legacy 2G/3G hardware.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> <span><strong>100% Digital Stack:</strong> API-first provisioning, instant eSIM, and cloud database agility.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> <span><strong>5G SA Native:</strong> Built for high throughput and ultra-low latency microservices.</span></li>
+                    </ul>
+                </div>
+
+                <!-- LEGACY HYBRID VECTOR DIAGRAM -->
+                <div class="glass-card rounded-2xl p-6 border-2 border-slate-300 shadow-sm space-y-4 hover-lift">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-network-wired"></i>
+                            Incumbent Legacy Hybrid Architecture
+                        </h3>
+                        <span class="text-xs font-mono bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-bold">Multi-Layer</span>
+                    </div>
+
+                    <div class="w-full bg-slate-900 p-4 rounded-xl border border-slate-800">
+                        <svg viewBox="0 0 400 180" class="w-full h-auto">
+                            <!-- UE Device -->
+                            <rect x="20" y="70" width="60" height="40" rx="6" fill="#0f172a" stroke="#9ca3af" stroke-width="2"/>
+                            <text x="50" y="95" text-anchor="middle" fill="#fff" font-size="10" font-family="sans-serif">Dual UE</text>
+
+                            <!-- Legacy Towers -->
+                            <path d="M 150 60 L 160 20 L 170 60 Z" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                            <text x="160" y="72" text-anchor="middle" fill="#9ca3af" font-size="8">2G/3G Layer</text>
+
+                            <path d="M 150 140 L 160 100 L 170 140 Z" fill="none" stroke="#ef4444" stroke-width="2"/>
+                            <text x="160" y="152" text-anchor="middle" fill="#9ca3af" font-size="8">5G NSA Anchor</text>
+
+                            <!-- Core Box -->
+                            <rect x="250" y="25" width="130" height="130" rx="8" fill="#1e293b" stroke="#4b5563" stroke-width="2"/>
+                            <text x="315" y="50" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">Legacy Core</text>
+                            <text x="315" y="68" text-anchor="middle" fill="#9ca3af" font-size="8">MSC / Circuit Switching</text>
+                            <line x1="260" y1="80" x2="370" y2="80" stroke="#4b5563" stroke-width="1"/>
+                            <text x="315" y="105" text-anchor="middle" fill="#ef4444" font-size="9" font-weight="bold">EPC / Hybrid Core</text>
+                            <text x="315" y="123" text-anchor="middle" fill="#9ca3af" font-size="8">Complex BSS Interop</text>
+
+                            <!-- Connectors -->
+                            <path d="M 80 80 L 145 40" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2"/>
+                            <path d="M 80 100 L 145 120" stroke="#ef4444" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+
+                    <ul class="space-y-2 text-xs text-slate-600 font-sans">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i> <span><strong>High Maintenance:</strong> Substantial operational cost maintaining legacy 2G/3G hardware layers.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5"></i> <span><strong>Complex Integration:</strong> Interoperability requirements between legacy BSS/OSS stacks and 5G NSA.</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i> <span><strong>Deep Physical Reach:</strong> Extensive nationwide coverage built over decades of regional presence.</span></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- CORE STRATEGY PILLARS TABLE -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-200 shadow-sm overflow-x-auto">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">Core Operational Pillars Comparison</h3>
+                <table class="w-full text-left border-collapse text-xs font-sans">
+                    <thead>
+                        <tr class="border-b border-slate-200 font-mono text-slate-600 uppercase bg-slate-100/70">
+                            <th class="py-3 px-4 font-bold">Operational Pillar</th>
+                            <th class="py-3 px-4 font-bold text-vodafone">Vodafone Oman (Greenfield)</th>
+                            <th class="py-3 px-4 font-bold text-omantel">Omantel (Incumbent MNO)</th>
+                            <th class="py-3 px-4 font-bold text-ooredoo">Ooredoo Oman (Incumbent MNO)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="py-3 px-4 font-bold text-slate-900">Core Network Architecture</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>100% Cloud-Native:</strong> 5G SA core, containerized microservices.</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>Hybrid Core:</strong> Modernized 5G layered over legacy 2G/3G/4G.</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>Hybrid Core:</strong> Modernized 5G layered over 3G/4G legacy.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-bold text-slate-900">Legacy Dependency</td>
+                            <td class="py-3 px-4 text-emerald-600 font-bold">Zero (No 2G/3G hardware maintenance).</td>
+                            <td class="py-3 px-4 text-amber-600 font-medium">High (Maintains 2G/3G fallback & IoT).</td>
+                            <td class="py-3 px-4 text-amber-600 font-medium">Moderate-High (Nationwide 3G/4G fallback).</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-bold text-slate-900">Coverage Strategy</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>Urban-Dense:</strong> Concentrated efficiency in Muscat, Salalah, Sohar.</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>Nationwide / Rural:</strong> Deep coverage across interior regions & highways.</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>Urban & Regional:</strong> Strong city footprint with moderate rural reach.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-bold text-slate-900">IT & Operational Stack</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>API-Driven:</strong> Digital-first app onboarding & real-time provisioning.</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>Enterprise Integration:</strong> Enterprise BSS/OSS with legacy systems.</td>
+                            <td class="py-3 px-4 text-slate-700"><strong>Mixed Stack:</strong> Digital interfaces tied to traditional back-office.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- REAL WORLD PERFORMANCE SCENARIOS -->
+        <section id="scenarios" class="glass-card rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+            <div>
+                <span class="text-xs font-mono text-sky-600 uppercase tracking-widest font-bold">Section 06</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Real-World Application Benchmarks</h2>
+                <p class="text-sm text-slate-500 mt-1">Observed service behaviors based on measured radio parameters.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3 hover-lift">
+                    <div class="w-10 h-10 rounded-lg bg-red-100 text-vodafone flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900">Ultra HD Video & Low-Latency Gaming</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        With an <strong>SNR of 22.6 dB</strong> and <strong>RSRP of -84 dBm</strong>, Vodafone Oman provides minimal bit-error rates (BER), maintaining high 256QAM modulation order without constellation degradation.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3 hover-lift">
+                    <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900">Standard Web & Enterprise Applications</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Ooredoo’s connection at <strong>-89 dBm RSRP</strong> and <strong>8.6 dB SNR</strong> reliably supports web browsing and SaaS sessions, though higher ambient noise can cause minor latency variances during peak indoor hours.
+                    </p>
+                </div>
+
+                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3 hover-lift">
+                    <div class="w-10 h-10 rounded-lg bg-orange-100 text-omantel flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-plane-arrival"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900">International Inbound Roaming</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        The Airtel SIM roaming on Omantel registers <strong>5G SA capability</strong>. However, user-plane traffic routing back to the home PLMN gateway via international GTP signaling adds round-trip latency overhead.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FOOTER & CREDITS SECTION -->
+        <footer id="credits" class="glass-card rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-md space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-2 space-y-4">
+                    <span class="text-xs font-mono text-sky-600 uppercase tracking-widest font-bold">Section 07</span>
+                    <h2 class="text-2xl font-bold text-slate-900">Key Research Conclusions</h2>
+                    <div class="space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        <p>
+                            <strong>1. Greenfield Operational Efficiency:</strong> Vodafone Oman’s greenfield cloud-native model allows rapid service deployment, smaller physical footprint, and excellent RF performance in urban centers.
+                        </p>
+                        <p>
+                            <strong>2. Incumbent Geographical Reach:</strong> Omantel and Ooredoo leverage decades of physical capital investment to provide extensive regional coverage across Oman’s mountains, wadis, and highways.
+                        </p>
+                        <p>
+                            <strong>3. Spectrum Strategy:</strong> Band B3 (1800 MHz) with 20 MHz bandwidth serves as the key capacity anchor across all three operators in urban sectors.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Amity Node Branding Box -->
+                <div class="rounded-2xl bg-gradient-to-br from-slate-900 to-sky-950 text-white p-6 flex flex-col justify-between space-y-4 shadow-xl">
+                    <div>
+                        <div class="text-xs font-mono text-sky-400 font-bold uppercase tracking-wider mb-1">Technical Partner & Publisher</div>
+                        <h3 class="text-xl font-bold text-white">Amity Node</h3>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                            Enterprise network architecture, telemetry analytics, and telecommunications benchmarking in the GCC region.
+                        </p>
+                    </div>
+
+                    <div class="space-y-2 pt-4 border-t border-slate-800 text-xs font-mono text-slate-300">
+                        <div><i class="fa-solid fa-globe text-sky-400 mr-2"></i> Website: <strong>amitynode.com</strong></div>
+                        <div><i class="fa-solid fa-laptop-code text-sky-400 mr-2"></i> Technical Analysis: <strong>Mr. Seyed Ussain Iqbal (Founder)</strong></div>
+                        <div><i class="fa-solid fa-user text-red-400 mr-2"></i> Telecom Field Data: <strong>Mr. Sajad (Sales Executive)</strong></div>
+                    </div>
+
+                    <button onclick="window.print()" class="w-full py-2.5 px-4 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 no-print shadow-lg shadow-sky-600/30">
+                        <i class="fa-solid fa-print"></i> Export / Download PDF Whitepaper
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Copyright Line -->
+            <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-500 gap-4">
+                <div>
+                    © 2026 Amity Node (amitynode.com). Technical Analysis by Mr. Seyed Ussain Iqbal (Founder, Amity Node) with Field Data support from Mr. Sajad (Sales Executive, Vodafone Oman).
+                </div>
+                <div>
+                    Timestamp: 30-10-2026 22:40 GST
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Charts and comparison table interactions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+        });
+
+        // Initialize Light Theme Charts
+        function initCharts() {
+            // Chart 1: RSRP & SNR
+            const ctxRF = document.getElementById('rfChart').getContext('2d');
+            new Chart(ctxRF, {
+                type: 'bar',
+                data: {
+                    labels: ['Vodafone Oman', 'Ooredoo Oman', 'Omantel (Roam)'],
+                    datasets: [
+                        {
+                            label: 'SNR Quality Ratio (dB)',
+                            data: [22.6, 8.6, 5.6],
+                            backgroundColor: ['rgba(230, 0, 0, 0.85)', 'rgba(237, 28, 36, 0.85)', 'rgba(255, 102, 0, 0.85)'],
+                            borderColor: ['#e60000', '#ed1c24', '#ff6600'],
+                            borderWidth: 1,
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'RSRP Magnitude (Abs dBm)',
+                            data: [84, 89, 96],
+                            backgroundColor: ['rgba(16, 185, 129, 0.25)', 'rgba(245, 158, 11, 0.25)', 'rgba(239, 68, 68, 0.25)'],
+                            borderColor: ['#10b981', '#f59e0b', '#ef4444'],
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#334155', font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' } }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#334155', font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' } }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Bandwidth Breakdown
+            const ctxBW = document.getElementById('bandwidthChart').getContext('2d');
+            new Chart(ctxBW, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Vodafone (25 MHz Total)', 'Ooredoo (45 MHz Total)', 'Omantel (30 MHz Total)'],
+                    datasets: [{
+                        data: [25, 45, 30],
+                        backgroundColor: [
+                            'rgba(230, 0, 0, 0.85)',
+                            'rgba(237, 28, 36, 0.65)',
+                            'rgba(255, 102, 0, 0.85)'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#334155', font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Matrix Search Filter
+        function filterMatrix() {
+            const input = document.getElementById('matrixSearch');
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById('techMatrixTable');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                let showRow = false;
+                const tds = tr[i].getElementsByTagName('td');
+                for (let j = 0; j < tds.length; j++) {
+                    if (tds[j]) {
+                        const txtValue = tds[j].textContent || tds[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            showRow = true;
+                            break;
+                        }
+                    }
+                }
+                tr[i].style.display = showRow ? "" : "none";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -897,3 +897,11 @@ h1, h2, p { margin-top: 0; }
   .cloud-topology-node, .mockup-frame, .network-node, .mockup-device-back, .store-product, .mockup-chart-bars > i { transition: none; }
   .project-card:hover .mockup-frame, .project-card:hover .store-product, .project-card:hover .mockup-device-back, .project-card:hover .network-node { transform: none; }
 }
+
+.case-study-page { min-height: 100vh; padding-top: 82px; background: #fff; }
+.case-study-frame { display: block; width: 100%; min-height: calc(100vh - 82px); border: 0; }
+
+@media (max-width: 760px) {
+  .case-study-page { padding-top: 68px; }
+  .case-study-frame { min-height: calc(100vh - 68px); }
+}

@@ -15,6 +15,7 @@ const ConfigurePage = lazy(() => import('./pages/ConfigurePage'))
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'))
 const InteractiveLabPage = lazy(() => import('./pages/InteractiveLabPage'))
 const BlogPage = lazy(() => import('./pages/BlogPage'))
+const CaseStudyPage = lazy(() => import('./pages/CaseStudyPage'))
 const FAQPage = lazy(() => import('./pages/FAQPage'))
 const AboutPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.AboutPage })))
 const ContactPage = lazy(() => import('./pages/CompanyPages').then((module) => ({ default: module.ContactPage })))
@@ -48,6 +49,7 @@ const searchItems = [
   ...services.map((service) => ({ title: service.title, category: 'Service', href: `/services/${service.slug}`, content: `${service.summary} ${service.description} ${service.useCases.join(' ')}` })),
   ...projects.map((project) => ({ title: project.title, category: 'Concept project', href: `/portfolio/${project.slug}`, content: `${project.summary} ${project.objective} ${project.approach} ${project.category}` })),
   ...articles.map((article) => ({ title: article.title, category: 'Journal', href: `/blog/${article.slug}`, content: `${article.summary} ${article.category} ${article.sections.flatMap((section) => [section.heading, ...section.paragraphs]).join(' ')}` })),
+  { title: 'Oman Telecom Network Infrastructure Case Study', category: 'Journal', href: '/journal/oman-telecom-network-infrastructure-case-study', content: 'Oman telecom network infrastructure fiber connectivity network planning greenfield architecture' },
 ]
 
 function SiteHeader() {
@@ -163,6 +165,7 @@ function RouteMetadata() {
       '/portfolio': { title: 'Portfolio Concepts | Amity Node', description: 'Explore clearly labeled concept projects and interface studies from Amity Node.' },
       '/interactive-lab': { title: 'Interactive 3D Lab | Amity Node', description: 'Experiment with a real-time 3D material, lighting, color, and rotation study.' },
       '/blog': { title: 'Technology Journal | Amity Node', description: 'Locally authored practical guides about web development, hosting, networks, and technology.' },
+      '/journal/oman-telecom-network-infrastructure-case-study': { title: 'Oman Telecom Network Infrastructure Case Study | Amity Node', description: 'An illustrative technical review of telecommunications infrastructure planning, network architecture, and connectivity in Oman.' },
       '/faq': { title: 'Frequently Asked Questions | Amity Node', description: 'Answers to common questions about Amity Node services and project scoping.' },
       '/about': { title: 'About Amity Node', description: 'Learn about Amity Node’s practical approach to technology, design, and business solutions.' },
       '/contact': { title: 'Contact Amity Node', description: 'Start a project conversation with Amity Node in Oman or from anywhere worldwide.' },
@@ -268,6 +271,7 @@ export default function App() {
     <Route path="/interactive-lab" element={<Suspense fallback={<main className="route-loading" aria-label="Loading interactive lab" />}><InteractiveLabPage /></Suspense>} />
     <Route path="/blog" element={<Suspense fallback={<main className="route-loading" aria-label="Loading journal" />}><BlogPage /></Suspense>} />
     <Route path="/blog/:slug" element={<Suspense fallback={<main className="route-loading" aria-label="Loading article" />}><BlogPage /></Suspense>} />
+    <Route path="/journal/oman-telecom-network-infrastructure-case-study" element={<Suspense fallback={<main className="route-loading" aria-label="Loading case study" />}><CaseStudyPage /></Suspense>} />
     <Route path="/faq" element={<Suspense fallback={<main className="route-loading" aria-label="Loading frequently asked questions" />}><FAQPage /></Suspense>} />
     <Route path="/about" element={<Suspense fallback={<main className="route-loading" aria-label="Loading About page" />}><AboutPage /></Suspense>} />
     <Route path="/contact" element={<Suspense fallback={<main className="route-loading" aria-label="Loading Contact page" />}><ContactPage /></Suspense>} />
